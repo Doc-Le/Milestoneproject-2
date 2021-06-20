@@ -20,3 +20,14 @@
  const allCards = [];
  
  let cards = [];
+ 
+ 
+ /** Function to initialize game context */
+ function init() {
+     // Initialize context DOM elements with jQuery
+     // Reset game panels
+     // Attach events to context DOM elements
+ }
+ 
+ /** JQuery detects state of readiness and call initilize */
+ $(document).ready(init);
