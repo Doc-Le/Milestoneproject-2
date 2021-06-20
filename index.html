@@ -14,16 +14,16 @@
 
 <body>
     <!-- 
-    Splash panel to be showing first when loaded in the browser, then will hidden once
+    Splash screen to be showing first when loaded in the browser, then will hidden once
     3 second timeout expired and show menu panel
     -->
-    <div id="splashPanel" class="px-1 py-1 my-1 text-center py-5">
+    <div id="splash" class="px-1 py-1 my-1 text-center py-5">
         <img class="d-block mx-auto mb-4" src="images/logo.svg" alt="Comics Memory Game" width="100" height="100" />
         <h1 class="display-5 fw-bold">Comics Memory Game</h1>
         DC & Marvel characters
     </div>
     <!-- Main container will represent the game UI structure once visible -->
-    <div class="container">
+    <div id="main" class="container d-none">
         <!-- Header to keep showing logo, title and some action buttoms -->
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
