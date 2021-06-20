@@ -22,20 +22,21 @@
         <h1 class="display-5 fw-bold">Comics Memory Game</h1>
         DC & Marvel characters
     </div>
-    <!-- Main container will represent the game UI structure once visible -->    
+    <!-- Main container will represent the game UI structure once visible -->
     <div class="container">
         <!-- Header to keep showing logo, title and some action buttoms -->
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <img class="d-block mx-auto me-2" src="images/logo.svg" alt="Comics Memory Game" width="30" height="30" />
+                <img class="d-block mx-auto me-2" src="images/logo.svg" alt="Comics Memory Game" width="30"
+                    height="30" />
             </div>
             <div class="col-sm-6 text-center">
-                <span class="fs-4">Comics Memory Game</span>                
+                <span class="fs-4">Comics Memory Game</span>
             </div>
             <!-- Header action buttoms when game is in progress -->
             <div class="col-sm-3 text-end">
-              <button id="restart" type="button" class="btn btn-outline-primary me-2">Restart</button>
-              <button id="quit" type="button" class="btn btn-primary">Quit</button>
+                <button id="restart" type="button" class="btn btn-outline-primary me-2">Restart</button>
+                <button id="quit" type="button" class="btn btn-primary">Quit</button>
             </div>
         </header>
         <!-- Menu panel shows top 3 scores, start playing the game, show all scores and about the game -->
@@ -56,17 +57,34 @@
             </div>
             <div class="col-lg-6 mx-auto">
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <button id="play" type="button" class="btn btn-primary btn-lg"">Play</button>
-                    <button id="scores" type="button" class="btn btn-outline-secondary btn-lg"">Scores</button>
-                    <button id="rules" type="button" class="btn btn-outline-secondary btn-lg"">Rules</button>
+                    <button id="play" type="button" class="btn btn-primary">Play</button>
+                    <button id="scores" type="button" class="btn btn-outline-secondary">Scores</button>
+                    <button id="rules" type="button" class="btn btn-outline-secondary">Rules</button>
                 </div>
             </div>
-        </div>         
-    </div>    
+        </div>
+        <!-- Game panel contains game board with top counters and bottom actions -->
+        <div id="gamePanel" class="px-1 py-1 my-1 text-center">
+            <!-- Game board header where shows lives, moves and gamer name-->
+            <div class="col-lg-6 mx-auto">
+            </div>
+            <!-- Game board where show cards-->
+            <div class="col-lg-3 mx-auto">
+                <div id="board" class="row row-cols-4 row-cols-sm-4 row-cols-md-4 row-cols-lg-4 g-1">
+                </div>
+            </div>
+            <!-- Game board footer where shows, moves, score and timer-->
+            <div class="col-lg-6 mx-auto">
+            </div>
+        </div>
+    </div>
     <!-- jQuery CDN – Latest Stable Version jQuery Core 3.6.0 slim minified -->
-    <script src=" https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src=" https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <!-- Bootstrap CDN - Latest Stable Version Bootstrap 5.0.1 minified bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
     <!-- Custom index file representing the whole game global context -->
     <script src="./js/index.js"></script>
 </body>
