@@ -23,7 +23,15 @@ let cards = [];
 /** Function to initialize game context */
 function init() {
     showSplashScreen();
-    // Attach events to context DOM elements
+    attachEvents();
+}
+
+/** Function to attach event to all DOM elements */
+function attachEvents () {
+    $playButton.on('click', function () {});
+    $quitButton.on('click', function () {});
+    $restartButton.on('click', function () {});
+    $saveButton.on('click', function () {});
 }
 
 /** Function to show splash and transition to main screen */
