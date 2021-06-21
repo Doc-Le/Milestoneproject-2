@@ -6,8 +6,14 @@
 
 /** Global variables */
 const $board = $('#board');
+const $live1 = $('#live1');
+const $live2 = $('#live2');
+const $live3 = $('#live3');
 const $main = $('#main');
+const $moves = $('#moves');
 const $splash = $('#splash');
+const $score = $('#score');
+const $timer = $('#timer');
 const $topScores = $('#topScores');
 const $playButton = $('#play');
 const $quitButton = $('#quit');
@@ -15,8 +21,19 @@ const $restartButton = $('#restart');
 const $saveButton = $('#save');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
-/** All 50 cards images available */
-const allCards = [];
+/** All 50 card indexes */
+const allCardIndexes = Array.from(new Array(50)).map(function (value, index) {
+    return index;
+});
+/** All 50 card objects available */
+const allCards = allCardIndexes.map(function (index) {
+    // Return card object
+    return { 
+        id: index, 
+        // Card image source path
+        src: `images/${index}.jpg` 
+    };
+});
 /** 2s timeout transition for splash screen */
 const splashScreenTimeout = 2000;
 /** Board has 8 duplicated shuffled cards */
@@ -25,8 +42,6 @@ let board = [];
 let cacheData = {};
 /** Cards has 8 random cards */
 let cards = [];
-/** Players has all available players on the device */
-let players = [];
 /** Game context object */
 let gameContext = {};
 
@@ -38,7 +53,7 @@ function init() {
 }
 
 /** Function to attach event to all DOM elements */
-function attachEvents () {
+function attachEvents() {
     $playButton.on('click', play);
     $quitButton.on('click', quit);
     $restartButton.on('click', restart);
@@ -46,24 +61,24 @@ function attachEvents () {
 }
 
 /** Function to show splash and transition to main screen */
-function showSplashScreen () {
+function showSplashScreen() {
     $splash.show();
     $main.hide();
     const hideSplashScreenTimeout = setTimeout(function () {
         showMainScreen();
         clearTimeout(hideSplashScreenTimeout);
-    }, splashScreenTimeout);    
+    }, splashScreenTimeout);
 }
 
 /** Function to show main and hide splash screen */
-function showMainScreen () {
+function showMainScreen() {
     $splash.hide();
     $main.show();
     showMenuPanel();
 }
 
 /** Function to show menu and hide game panel */
-function showMenuPanel () {
+function showMenuPanel() {
     loadTopScores();
     // Show/hide panels
     $gamePanel.hide();
@@ -74,7 +89,7 @@ function showMenuPanel () {
 }
 
 /** Function to show game and hide menu panel */
-function showGamePanel () {
+function showGamePanel() {
     // Show/hide panels
     $gamePanel.show();
     $menuPanel.hide();
@@ -93,7 +108,18 @@ function play() {
 /** Function to quit game and return to menu panel */
 function quit() {
     showMenuPanel();
-    // clean all
+    // clean all DOM elements
+    $board.empty();
+    $live1.removeClass();
+    $live2.removeClass();
+    $live3.removeClass();
+    $moves.text('0');
+    $score.text('0');
+    $timer.text('03:00');
+    // clean all variables
+    board = [];
+    cards = [];
+    gameContext = {};
 }
 
 /** Function to restart game */
@@ -104,20 +130,42 @@ function restart() {
 }
 
 /** Function to save player name from form in cache */
-function savePlayerName () {
+function savePlayerName() {
     // save form input player name in local storage players
     // clear form input player name
 }
 
 /** Function to start card board */
-function startBoard () {
-    // save form input player name in local storage players
+function startBoard() {
+    // get random 8 cards
+    // shuffle random 8 duplicated cards
     // clear form input player name
 }
 
+/** Function to get new random cards */
+function getNewCards() {
+    Array.from(new Array(8)).map(function () {
+        const index = allCardIndexes[allCardIndexes.length * Math.random() | 0];
+        const card = { 
+            id: index, 
+            // Card image source path
+            src: `images/${index}.jpg` 
+        };
+        // Original card object
+        cards.push(card);
+        // Duplicated card object
+        cards.push(Object.assign({}, card));
+    });
+}
 
 /** Function to load top 3 player from cache */
-function loadTopScores () {
+function loadTopScores() {
+    // get cached scores
+    // $topScores append elements to each score
+}
+
+/** Function to load top 3 player from cache */
+function loadTopScores() {
     // get cached scores
     // $topScores append elements to each score
 }
