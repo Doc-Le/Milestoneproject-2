@@ -28,14 +28,16 @@ const allCardIndexes = Array.from(new Array(50)).map(function (value, index) {
 /** All 50 card objects available */
 const allCards = allCardIndexes.map(function (index) {
     // Return card object
-    return { 
-        id: index, 
+    return {
+        id: index,
         // Card image source path
-        src: `images/${index}.jpg` 
+        src: `images/${index}.jpg`
     };
 });
 /** 2s timeout transition for splash screen */
 const splashScreenTimeout = 2000;
+/** Game time interval 3 minutes in seconds */
+const gameTimeInterval = 180;
 /** Board has 8 duplicated shuffled cards */
 let board = [];
 /** Cached data object from local storage */
@@ -44,6 +46,8 @@ let cacheData = {};
 let cards = [];
 /** Game context object */
 let gameContext = {};
+/** Game time interval object */
+let gameTimeIntervalId;
 
 
 /** Function to initialize game context */
@@ -139,17 +143,54 @@ function savePlayerName() {
 function startBoard() {
     getNewCards();
     shuffleBoardCards();
+    startCounters();
+    startTimer();
     // clear form input player name
+}
+
+/** Function to start counters */
+function startCounters() {
+    //set icon lives class
+    $live1.addClass('on');
+    $live2.addClass('on');
+    $live3.addClass('on');
+    //set moves counter
+    $moves.text('0');
+    //set initial scores counter
+    $score.text('0');
+}
+
+/** Function to start game timer */
+function startTimer() {
+    //set initial timer counter
+    $timer.text('3m 00s');
+    //set timer 3 minutes interval
+    let interval = gameTimeInterval;
+    gameTimeIntervalId = setInterval(function () {
+        interval--;
+        if (interval <= 0) {
+            // call game over
+            clearInterval(gameTimeIntervalId);
+            return;
+        }
+        if (interval > 0) {
+            const minutes = Math.floor(interval / 60);
+            const seconds = interval % 60;
+            $timer.text(`${minutes}m ${seconds}`);
+        } else {
+            $timer.text('0m 00s');
+        }
+    }, 1000);
 }
 
 /** Function to get new random cards */
 function getNewCards() {
     getArrayFrom(8).map(function () {
         const index = allCardIndexes[allCardIndexes.length * Math.random() | 0];
-        const card = { 
-            id: index, 
+        const card = {
+            id: index,
             // Card image source path
-            src: `images/${index}.jpg` 
+            src: `images/${index}.jpg`
         };
         // Original card object
         cards.push(card);
@@ -174,13 +215,15 @@ function shuffleBoardCards() {
 */
 function getArrayFrom(size) {
     return Array.from(new Array(size));
-} 
+}
 
 /** Function to load top 3 player from cache */
 function loadTopScores() {
     // get cached scores
     // $topScores append elements to each score
 }
+
+
 
 /** JQuery detects state of readiness and call initilize */
 $(document).ready(init);
