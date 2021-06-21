@@ -30,7 +30,7 @@ function init() {
 function attachEvents () {
     $playButton.on('click', play);
     $quitButton.on('click', quit);
-    $restartButton.on('click', function () {});
+    $restartButton.on('click', restart);
     $saveButton.on('click', function () {});
 }
 
@@ -81,6 +81,12 @@ function quit() {
     showMenuPanel();
     // clean all
 }
+
+/** Function to restart game */
+function restart() {
+
+}
+
 
 /** JQuery detects state of readiness and call initilize */
 $(document).ready(init);
