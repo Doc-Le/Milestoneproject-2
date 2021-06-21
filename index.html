@@ -23,7 +23,7 @@
         DC & Marvel characters
     </div>
     <!-- Main container will represent the game UI structure once visible -->
-    <div id="main" class="container d-none">
+    <div id="main" class="container">
         <!-- Header to keep showing logo, title and some action buttoms -->
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
@@ -67,6 +67,10 @@
         <div id="gamePanel" class="px-1 py-1 my-1 text-center">
             <!-- Game board header where shows lives, moves and gamer name-->
             <div class="col-lg-6 mx-auto">
+                <span id="live1">1</span>
+                <span id="live2">2</span>
+                <span id="live3">3</span>
+                moves<span id="moves">0</span>
             </div>
             <!-- Game board where show cards-->
             <div class="col-lg-3 mx-auto">
@@ -75,6 +79,8 @@
             </div>
             <!-- Game board footer where shows, moves, score and timer-->
             <div class="col-lg-6 mx-auto">
+                score<span id="score">0</span>
+                time remaining<span id="timer">3:00</span>
             </div>
         </div>
     </div>
