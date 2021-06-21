@@ -8,16 +8,23 @@
 const $board = $('#board');
 const $main = $('#main');
 const $splash = $('#splash');
+const $topScores = $('#topScores');
 const $playButton = $('#play');
 const $quitButton = $('#quit');
 const $restartButton = $('#restart');
 const $saveButton = $('#save');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
+/** All 50 cards images available */
 const allCards = [];
 /** 2s timeout transition for splash screen */
 const splashScreenTimeout = 2000;
+/** Board has 8 duplicated shuffled cards */
+let board = [];
+/** Cards has 8 random cards */
 let cards = [];
+/** Players has all available players on the device */
+let players = [];
 
 
 /** Function to initialize game context */
@@ -58,6 +65,7 @@ function showMenuPanel () {
     // Hide header action buttoms when menu visible
     $restartButton.hide();
     $quitButton.hide();
+    loadTopScores();
 }
 
 /** Function to show game and hide menu panel */
@@ -89,9 +97,16 @@ function restart() {
     // start score
 }
 
-/** Function to save player name from form in local storage */
+/** Function to save player name from form in cache */
 function savePlayerName () {
     // save form input player name in local storage players
+    // clear form input player name
+}
+
+/** Function to load top 3 player from cache */
+function loadTopScores () {
+    // get cached scores
+    // $topScores append elements to each score
 }
 
 /** JQuery detects state of readiness and call initilize */
