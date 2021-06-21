@@ -143,9 +143,9 @@ function savePlayerName() {
 function startBoard() {
     getNewCards();
     shuffleBoardCards();
+    loadBoardElemets();
     startCounters();
     startTimer();
-    // clear form input player name
 }
 
 /** Function to start counters */
@@ -190,7 +190,11 @@ function getNewCards() {
         const card = {
             id: index,
             // Card image source path
-            src: `images/${index}.jpg`
+            src: `images/${index}.jpg`,
+            // Card currently selected by player
+            selected: false,
+            // Card already matched by player
+            matched: false
         };
         // Original card object
         cards.push(card);
@@ -217,12 +221,34 @@ function getArrayFrom(size) {
     return Array.from(new Array(size));
 }
 
+/** Function to load board DOM elements */
+function loadBoardElemets() {
+    board.forEach(function (card, index) {
+        const $image = $(`<img src="${card.src}" class="img-fluid img-width" alt="Click to play" />`);
+        const $card = $(`<div class="col d-flex align-items-start"></div>`);
+        $card.append($image)
+            .on('click', function () {
+                $image.src(card.src);
+                const selectedCards = board.filter(function (filterCard) {
+                    return filterCard.selected && !filterCard.matched;
+                });
+                board[index].selected = true;
+                if (!selectedCards.length) {
+                    return;
+                }
+                // validate cards matching
+                // update matched properties
+                // update counters
+            });
+        $board.append($card);
+    })
+}
+
 /** Function to load top 3 player from cache */
 function loadTopScores() {
     // get cached scores
     // $topScores append elements to each score
 }
-
 
 
 /** JQuery detects state of readiness and call initilize */
