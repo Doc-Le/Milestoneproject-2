@@ -139,7 +139,6 @@ function savePlayerName() {
 function startBoard() {
     getNewCards();
     shuffleBoardCards();
-    start
     // clear form input player name
 }
 
