@@ -138,7 +138,7 @@ function savePlayerName() {
 /** Function to start card board */
 function startBoard() {
     getNewCards();
-    // shuffle random 8 duplicated cards
+    shuffleBoardCards();
     // clear form input player name
 }
 
@@ -156,6 +156,15 @@ function getNewCards() {
         // Duplicated card object
         cards.push(Object.assign({}, card));
     });
+}
+
+/** Function to shuffle board cards random */
+function shuffleBoardCards() {
+    board = cards.reduce(function (acc, cur) {
+        const newIndex = cards[cards.length * Math.random() | 0];
+        acc[newIndex] = Object.assign({}, cur);
+        return acc;
+    }, []);
 }
 
 /** 
