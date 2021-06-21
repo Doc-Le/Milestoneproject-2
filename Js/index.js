@@ -71,7 +71,7 @@ function showGamePanel () {
 
 /** Function to start playing game */
 function play() {
-    // show popup modal to save gamer name
+    // show popup modal to save player name
     // start board
     showGamePanel();
 }
@@ -84,9 +84,15 @@ function quit() {
 
 /** Function to restart game */
 function restart() {
-
+    // start lives
+    // start moves
+    // start score
 }
 
+/** Function to save player name from form in local storage */
+function savePlayerName () {
+    // save form input player name in local storage players
+}
 
 /** JQuery detects state of readiness and call initilize */
 $(document).ready(init);
