@@ -28,7 +28,7 @@ function init() {
 
 /** Function to attach event to all DOM elements */
 function attachEvents () {
-    $playButton.on('click', function () {});
+    $playButton.on('click', play);
     $quitButton.on('click', function () {});
     $restartButton.on('click', function () {});
     $saveButton.on('click', function () {});
@@ -67,6 +67,13 @@ function showGamePanel () {
     // Show header action buttoms when menu visible
     $restartButton.show();
     $quitButton.show();
+}
+
+/** Function to start playing game */
+function play() {
+    // show popup modal to save gamer name
+    // start board
+    showGamePanel();
 }
 
 /** JQuery detects state of readiness and call initilize */
