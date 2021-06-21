@@ -36,20 +36,29 @@ function showSplashScreen () {
     }, splashScreenTimeout);    
 }
 
-/** Function to show main and splash screen */
+/** Function to show main and hide splash screen */
 function showMainScreen () {
     $splash.hide();
     $main.show();
     showMenuPanel();
 }
 
-/** Function to show main and splash screen */
+/** Function to show menu and hide game panel */
 function showMenuPanel () {
     $gamePanel.hide();
     $menuPanel.show();
     // Hide header action buttoms when menu visible
     $restartButton.hide();
     $quitButton.hide();
+}
+
+/** Function to show game and hide menu panel */
+function showGamePanel () {
+    $gamePanel.show();
+    $menuPanel.hide();
+    // Show header action buttoms when menu visible
+    $restartButton.show();
+    $quitButton.show();
 }
 
 /** JQuery detects state of readiness and call initilize */
