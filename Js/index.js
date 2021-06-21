@@ -31,8 +31,15 @@ function showSplashScreen () {
     $splash.show();
     $main.hide();
     const hideSplashScreenTimeout = setTimeout(function () {
+        showMainScreen();
         clearTimeout(hideSplashScreenTimeout);
     }, splashScreenTimeout);    
+}
+
+/** Function to show main and splash screen */
+function showMainScreen () {
+    $splash.hide();
+    $main.show();
 }
 
 /** JQuery detects state of readiness and call initilize */
