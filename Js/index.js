@@ -139,6 +139,7 @@ function savePlayerName() {
 function startBoard() {
     getNewCards();
     shuffleBoardCards();
+    start
     // clear form input player name
 }
 
@@ -175,12 +176,6 @@ function shuffleBoardCards() {
 function getArrayFrom(size) {
     return Array.from(new Array(size));
 } 
-
-/** Function to load top 3 player from cache */
-function loadTopScores() {
-    // get cached scores
-    // $topScores append elements to each score
-}
 
 /** Function to load top 3 player from cache */
 function loadTopScores() {
