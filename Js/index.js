@@ -137,14 +137,14 @@ function savePlayerName() {
 
 /** Function to start card board */
 function startBoard() {
-    // get random 8 cards
+    getNewCards();
     // shuffle random 8 duplicated cards
     // clear form input player name
 }
 
 /** Function to get new random cards */
 function getNewCards() {
-    Array.from(new Array(8)).map(function () {
+    getArrayFrom(8).map(function () {
         const index = allCardIndexes[allCardIndexes.length * Math.random() | 0];
         const card = { 
             id: index, 
@@ -157,6 +157,15 @@ function getNewCards() {
         cards.push(Object.assign({}, card));
     });
 }
+
+/** 
+ * Function to get array from  
+ * @param size number
+ * @returns array with provided size
+*/
+function getArrayFrom(size) {
+    return Array.from(new Array(size));
+} 
 
 /** Function to load top 3 player from cache */
 function loadTopScores() {
