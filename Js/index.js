@@ -29,7 +29,7 @@ function init() {
 /** Function to attach event to all DOM elements */
 function attachEvents () {
     $playButton.on('click', play);
-    $quitButton.on('click', function () {});
+    $quitButton.on('click', quit);
     $restartButton.on('click', function () {});
     $saveButton.on('click', function () {});
 }
@@ -74,6 +74,12 @@ function play() {
     // show popup modal to save gamer name
     // start board
     showGamePanel();
+}
+
+/** Function to quit game and return to menu panel */
+function quit() {
+    showMenuPanel();
+    // clean all
 }
 
 /** JQuery detects state of readiness and call initilize */
