@@ -40,6 +40,16 @@ function showSplashScreen () {
 function showMainScreen () {
     $splash.hide();
     $main.show();
+    showMenuPanel();
+}
+
+/** Function to show main and splash screen */
+function showMenuPanel () {
+    $gamePanel.hide();
+    $menuPanel.show();
+    // Hide header action buttoms when menu visible
+    $restartButton.hide();
+    $quitButton.hide();
 }
 
 /** JQuery detects state of readiness and call initilize */
