@@ -21,10 +21,14 @@ const allCards = [];
 const splashScreenTimeout = 2000;
 /** Board has 8 duplicated shuffled cards */
 let board = [];
+/** Cached data object from local storage */
+let cacheData = {};
 /** Cards has 8 random cards */
 let cards = [];
 /** Players has all available players on the device */
 let players = [];
+/** Game context object */
+let gameContext = {};
 
 
 /** Function to initialize game context */
@@ -60,16 +64,18 @@ function showMainScreen () {
 
 /** Function to show menu and hide game panel */
 function showMenuPanel () {
+    loadTopScores();
+    // Show/hide panels
     $gamePanel.hide();
     $menuPanel.show();
     // Hide header action buttoms when menu visible
     $restartButton.hide();
     $quitButton.hide();
-    loadTopScores();
 }
 
 /** Function to show game and hide menu panel */
 function showGamePanel () {
+    // Show/hide panels
     $gamePanel.show();
     $menuPanel.hide();
     // Show header action buttoms when menu visible
@@ -80,7 +86,7 @@ function showGamePanel () {
 /** Function to start playing game */
 function play() {
     // show popup modal to save player name
-    // start board
+    startBoard();
     showGamePanel();
 }
 
@@ -102,6 +108,13 @@ function savePlayerName () {
     // save form input player name in local storage players
     // clear form input player name
 }
+
+/** Function to start card board */
+function startBoard () {
+    // save form input player name in local storage players
+    // clear form input player name
+}
+
 
 /** Function to load top 3 player from cache */
 function loadTopScores () {
