@@ -31,7 +31,7 @@ function attachEvents () {
     $playButton.on('click', play);
     $quitButton.on('click', quit);
     $restartButton.on('click', restart);
-    $saveButton.on('click', function () {});
+    $saveButton.on('click', savePlayerName);
 }
 
 /** Function to show splash and transition to main screen */
