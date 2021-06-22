@@ -169,7 +169,7 @@ function startTimer() {
     gameTimeIntervalId = setInterval(function () {
         interval--;
         if (interval < 0) {
-            // call game over function
+            gameOver(true);
             clearInterval(gameTimeIntervalId);
             return;
         }
@@ -305,6 +305,19 @@ function cardSelect($card, $image, card) {
 function loadTopScores() {
     // get cached scores
     // $topScores append elements to each score
+}
+
+/** 
+ * Function to end the game and notify player
+ * @param timedOut optional game timed out boolean
+ */
+function gameOver(timedOut = false) {
+    // select message to show
+    let message = 'Exceeded maximun moves';
+    if (timedOut) {
+        message = 'Game timed out!'
+    }
+    // show popup modal game over message, buttons try again and leave
 }
 
 
