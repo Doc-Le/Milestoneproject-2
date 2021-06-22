@@ -39,7 +39,7 @@ const splashScreenTimeout = 2000;
 const gameTimeInterval = 180;
 const defaultCardImageSource = 'images/logo.svg';
 /** Default game context object */
-const defaultGameContext = { player: 'N/A', moves: 0, lives: 6, time: gameTimeInterval, score: 0 };
+const defaultGameContext = { player: 'N/A', moves: 0, lives: 6, time: gameTimeInterval, score: 0, matched: 0 };
 /** Board has 8 duplicated shuffled cards */
 let board = [];
 /** Cached data object from local storage */
@@ -176,11 +176,14 @@ function startTimer() {
             return;
         }
         if (interval >= 0) {
+            //update game context time
+            gameContext.time = interval;
             const minutes = Math.floor(interval / 60);
             const seconds = interval % 60;
+            //update game timer DOM
             $timer.text(`${minutes}m ${seconds}s`);
-        } else {
-            $timer.text('0m 00s');
+            //update game score
+            updateScore();
         }
     }, 1000);
 }
@@ -291,13 +294,14 @@ function cardSelect($card, $image, card) {
     }
     const selectedCard = selectedCards[0];
     if (selectedCard.id == card.id) {
-        console.log('cards matched');
         // set both cards object matched property to true
         selectedCard.matched = true;
         card.matched = true;
-        // set both cards object matched property to true
+        // update gamer context matched counter
+        gameContext.matched++;
     }
-    // update counters
+    // update all counters after validating 
+    updateCounters();
     // unselect both cards
     selectedCard.selected = false;
     card.selected = false;
@@ -320,6 +324,23 @@ function gameOver(timedOut = false) {
         message = 'Game timed out!'
     }
     // show popup modal game over message, buttons try again and leave
+}
+
+/** Function to update all counters as moves, lives, score */
+function updateCounters() {
+    // update gamer context data first
+    updateMoves();
+    updateLives();
+    // calculate and update gamer context score
+    updateScore();
+}
+
+/** Function to update moves counter */
+function updateMoves() {
+    // increment moves by 1
+    const moves = gameContext.moves++;
+    // update move DOM counter
+    $moves.text(moves);
 }
 
 /** Function to update 6 lives and 3 element icons css class based on moves */
@@ -366,18 +387,20 @@ function updateLives() {
     gameContext.lives = lives;
 }
 
-/** Function to update score counter based on lives, moves and time */
+/** Function to update score counter based on lives, moves, time and matched cards */
 function updateScore() {
     const moves = gameContext.moves;
     const lives = gameContext.lives;
     const time = gameContext.time;
+    const matched = gameContext.matched;
     // calculate score value
-    const score = parseInt((moves + lives) * time);
+    const score = parseInt((moves + lives + matched) * time);
     // update score DOM counter
     $score.text(score);
     // update score in game context object
     gameContext.score = score;
 }
+
 
 /** JQuery detects state of readiness and call initilize */
 $(document).ready(init);
