@@ -224,14 +224,14 @@ function shuffleBoard() {
     let counter = board.length;
     // while there are items in the array
     while (counter > 0) {
-     // pick a random index
-     const index = Math.floor(counter * Math.random());
-     // decrease counter by 1
-     counter--;
-     // and swap the last item index with it
-     const temp = board[counter];
-     board[counter] = board[index];
-     board[index] = temp;
+        // pick a random index
+        const index = Math.floor(counter * Math.random());
+        // decrease counter by 1
+        counter--;
+        // and swap the last item index with it
+        const temp = board[counter];
+        board[counter] = board[index];
+        board[index] = temp;
     }
 }
 
@@ -286,7 +286,7 @@ function cardSelect($card, $image, card) {
         // select current card
         card.selected = true;
         return;
-    } 
+    }
     const selectedCard = selectedCards[0];
     if (selectedCard.id == card.id) {
         console.log('cards matched');
@@ -320,6 +320,49 @@ function gameOver(timedOut = false) {
     // show popup modal game over message, buttons try again and leave
 }
 
+/** Function to update 6 lives and 3 element icons css class based on moves */
+function updateLives() {
+    const moves = gameContext.moves;
+    let lives = gameContext.lives;
+    switch (true) {
+        // 2 1/2 hearts - Greater 10 less equal 12
+        case moves > 10 && moves <= 12:
+            $live3.removeClass('bi-heart-fill').addClass('bi-heart-half');
+            lives = 5;
+            break;
+        // 2 hearts - Greater 12 less equal 14
+        case moves > 12 && moves <= 14:
+            $live3.removeClass('bi-heart-half').addClass('bi-heart');
+            lives = 4;
+            break;
+        // 1 1/2 hearts - Greater 14 less equal 16
+        case moves > 14 && moves <= 16:
+            $live2.removeClass('bi-heart-fill').addClass('bi-heart-half');
+            lives = 3;
+            break;
+        // 1 heart - Greater 16 less equal 18
+        case moves > 16 && moves <= 18:
+            $live2.removeClass('bi-heart-half').addClass('bi-heart');
+            lives = 2;
+            break;
+        // 1/2 heart - Greater 18 less equal 20
+        case moves > 18 && moves <= 20:
+            $live1.removeClass('bi-heart-fill').addClass('bi-heart-half');
+            lives = 1;
+            break;
+        // 0 heart - Game over
+        case moves > 20:
+            $live1.removeClass('bi-heart-half').addClass('bi-heart');
+            lives = 0;
+            break;
+        // 3 hearts - Less equal 10        
+        default:
+            lives = 6;
+            break;
+    }
+    // update lives in game context object
+    gameContext.lives = lives;
+}
 
 /** JQuery detects state of readiness and call initilize */
 $(document).ready(init);
