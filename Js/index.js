@@ -198,16 +198,16 @@ function getNewCards() {
         };
         // Original card object
         cards.push(card);
-        // Duplicated card object
-        cards.push(Object.assign({}, card));
     });
+    cards = cards.concat(cards);
 }
 
 /** Function to shuffle board cards random */
 function shuffleBoardCards() {
     board = cards.reduce(function (acc, cur) {
-        const newIndex = cards[cards.length * Math.random() | 0];
-        acc[newIndex] = Object.assign({}, cur);
+        const index = cards.length * Math.random() | 0;
+        cur.index = index;
+        acc[index] = cur;
         return acc;
     }, []);
 }
@@ -228,7 +228,7 @@ function loadBoardElemets() {
         const $card = $(`<div class="col d-flex align-items-start"></div>`);
         $card.append($image)
             .on('click', function () {
-                $image.src(card.src);
+                $image.attr('src', card.src);
                 const selectedCards = board.filter(function (filterCard) {
                     return filterCard.selected && !filterCard.matched;
                 });
