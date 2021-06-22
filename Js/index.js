@@ -354,32 +354,32 @@ function updateLives() {
     switch (true) {
         // 2 1/2 hearts - Greater 10 less equal 12
         case moves > 10 && moves <= 12:
-            $live3.removeClass('bi-heart-fill').addClass('bi-heart-half');
+            $live3.removeClass().addClass('bi-heart-half');
             lives = 5;
             break;
         // 2 hearts - Greater 12 less equal 14
         case moves > 12 && moves <= 14:
-            $live3.removeClass('bi-heart-half').addClass('bi-heart');
+            $live3.removeClass().addClass('bi-heart');
             lives = 4;
             break;
         // 1 1/2 hearts - Greater 14 less equal 16
         case moves > 14 && moves <= 16:
-            $live2.removeClass('bi-heart-fill').addClass('bi-heart-half');
+            $live2.removeClass().addClass('bi-heart-half');
             lives = 3;
             break;
         // 1 heart - Greater 16 less equal 18
         case moves > 16 && moves <= 18:
-            $live2.removeClass('bi-heart-half').addClass('bi-heart');
+            $live2.removeClass().addClass('bi-heart');
             lives = 2;
             break;
         // 1/2 heart - Greater 18 less equal 20
         case moves > 18 && moves <= 20:
-            $live1.removeClass('bi-heart-fill').addClass('bi-heart-half');
+            $live1.removeClass().addClass('bi-heart-half');
             lives = 1;
             break;
         // 0 heart - Game over
         case moves > 20:
-            $live1.removeClass('bi-heart-half').addClass('bi-heart');
+            $live1.removeClass().addClass('bi-heart');
             lives = 0;
             break;
         // 3 hearts - Less equal 10        
