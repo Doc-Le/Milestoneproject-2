@@ -116,27 +116,23 @@ function quit() {
     showMenuPanel();
     // clean all DOM elements
     $board.empty();
-    $live1.removeClass();
-    $live2.removeClass();
-    $live3.removeClass();
-    $moves.text('0');
-    $score.text('0');
-    $timer.text('3m 00s');
     // clean all variables
     board = [];
     cards = [];
-    gameContext = defaultGameContext;
-    //clear time interval if exists
-    if (gameTimeIntervalId) {
-        clearInterval(gameTimeIntervalId);
-    }
+    // restart game context
+    restart();
 }
 
 /** Function to restart game */
 function restart() {
-    // start lives
-    // start moves
-    // start score
+    // clear time interval if exists
+    if (gameTimeIntervalId) {
+        clearInterval(gameTimeIntervalId);
+    }
+    // restart game context object
+    gameContext = defaultGameContext;
+    // update game counters
+    updateCounters();
 }
 
 /** Function to save player name from form in cache */
@@ -150,20 +146,8 @@ function startBoard() {
     getNewCards();
     shuffleBoard();
     loadBoardElemets();
-    startCounters();
+    updateCounters();
     startTimer();
-}
-
-/** Function to start counters */
-function startCounters() {
-    //set icon lives class
-    $live1.addClass('on');
-    $live2.addClass('on');
-    $live3.addClass('on');
-    //set moves counter
-    $moves.text('0');
-    //set initial scores counter
-    $score.text('0');
 }
 
 /** Function to start game timer */
@@ -384,6 +368,9 @@ function updateLives() {
             break;
         // 3 hearts - Less equal 10        
         default:
+            $live1.removeClass().addClass('bi-heart-fill');
+            $live2.removeClass().addClass('bi-heart-fill');
+            $live3.removeClass().addClass('bi-heart-fill');
             lives = 6;
             break;
     }
