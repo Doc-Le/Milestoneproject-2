@@ -121,11 +121,13 @@ function quit() {
     $live3.removeClass();
     $moves.text('0');
     $score.text('0');
-    $timer.text('03:00');
+    $timer.text('3m 00s');
     // clean all variables
     board = [];
     cards = [];
     gameContext = defaultGameContext;
+    // clean all variables
+    restartTimer();
 }
 
 /** Function to restart game */
@@ -186,6 +188,15 @@ function startTimer() {
             updateScore();
         }
     }, 1000);
+}
+
+/** Function to restart game timer */
+function restartTimer() {
+    if (!gameTimeIntervalId) {
+        return;
+    }
+    //clear time interval if exists
+    clearInterval(gameTimeIntervalId);
 }
 
 /** Function to get new random 8 unique cards and duplicate */
@@ -400,7 +411,6 @@ function updateScore() {
     // update score in game context object
     gameContext.score = score;
 }
-
 
 /** JQuery detects state of readiness and call initilize */
 $(document).ready(init);
