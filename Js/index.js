@@ -21,12 +21,11 @@ const $restartButton = $('#restart');
 const $saveButton = $('#save');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
-/** All 50 card indexes */
-const allCardIndexes = Array.from(new Array(50)).map(function (value, index) {
-    return index;
-});
+const numberOfAvailableCards = 50;
+const numberOfUniqueCards = 8;
+const cardsAvailable = 50;
 /** All 50 card objects available */
-const allCards = allCardIndexes.map(function (index) {
+const allCards = getArrayFrom(numberOfAvailableCards).map(function (_, index) {
     // Return card object
     return {
         id: index,
@@ -183,23 +182,39 @@ function startTimer() {
     }, 1000);
 }
 
-/** Function to get new random cards */
+/** Function to get new random 8 unique cards and duplicate */
 function getNewCards() {
-    getArrayFrom(8).map(function () {
-        const index = allCardIndexes[allCardIndexes.length * Math.random() | 0];
-        const card = {
-            id: index,
-            // Card image source path
-            src: `images/${index}.jpg`,
-            // Card currently selected by player
-            selected: false,
-            // Card already matched by player
-            matched: false
-        };
+    while (cards.length < numberOfUniqueCards) {
+        const card = getNewCard();
         // Original card object
         cards.push(card);
-    });
+    }
+    // duplicate unique 8 cards to be matched
     cards = cards.concat(cards);
+}
+
+/** Function to get new random card */
+function getNewCard() {
+    const id = Math.floor(numberOfAvailableCards * Math.random());
+    // Find if card already exists in cards
+    const cardExists = cards.find(function (card) {
+        return card.id === id;
+    });
+    // If card already exists in cards, get new card again
+    if (cardExists) {
+        // call get new card function again
+        return getNewCard();
+    }
+    // If card doesn't exist return new card
+    return {
+        id: id,
+        // Card image source path
+        src: `images/${id}.jpg`,
+        // Card currently selected by player
+        selected: false,
+        // Card already matched by player
+        matched: false
+    };
 }
 
 /** Function to shuffle board cards randomly */
@@ -209,7 +224,7 @@ function shuffleBoard() {
     // while there are items in the array
     while (counter > 0) {
      // pick a random index
-     const index = Math.floor(Math.random() * counter);
+     const index = Math.floor(counter * Math.random());
      // decrease counter by 1
      counter--;
      // and swap the last item index with it
