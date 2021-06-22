@@ -126,8 +126,10 @@ function quit() {
     board = [];
     cards = [];
     gameContext = defaultGameContext;
-    // clean all variables
-    restartTimer();
+    //clear time interval if exists
+    if (gameTimeIntervalId) {
+        clearInterval(gameTimeIntervalId);
+    }
 }
 
 /** Function to restart game */
@@ -188,15 +190,6 @@ function startTimer() {
             updateScore();
         }
     }, 1000);
-}
-
-/** Function to restart game timer */
-function restartTimer() {
-    if (!gameTimeIntervalId) {
-        return;
-    }
-    //clear time interval if exists
-    clearInterval(gameTimeIntervalId);
 }
 
 /** Function to get new random 8 unique cards and duplicate */
