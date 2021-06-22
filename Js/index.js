@@ -37,6 +37,7 @@ const allCards = getArrayFrom(numberOfAvailableCards).map(function (_, index) {
 const splashScreenTimeout = 2000;
 /** Game time interval 3 minutes in seconds */
 const gameTimeInterval = 180;
+const defaultCardImageSource = 'images/logo.svg';
 /** Board has 8 duplicated shuffled cards */
 let board = [];
 /** Cached data object from local storage */
@@ -167,15 +168,15 @@ function startTimer() {
     let interval = gameTimeInterval;
     gameTimeIntervalId = setInterval(function () {
         interval--;
-        if (interval <= 0) {
-            // call game over
+        if (interval < 0) {
+            // call game over function
             clearInterval(gameTimeIntervalId);
             return;
         }
-        if (interval > 0) {
+        if (interval >= 0) {
             const minutes = Math.floor(interval / 60);
             const seconds = interval % 60;
-            $timer.text(`${minutes}m ${seconds}`);
+            $timer.text(`${minutes}m ${seconds}s`);
         } else {
             $timer.text('0m 00s');
         }
@@ -249,13 +250,18 @@ function loadBoardElemets() {
     board.forEach(function (card) {
         const $image = $(`<img id="image${card.index}" src="${card.src}" class="img-fluid img-width" alt="Click to play" />`);
         const $card = $(`<div id="card${card.index}" class="col d-flex align-items-start"></div>`);
-        $card.append($image);
         // click event to select and validating matched card
         $card.on('click', function () {
             cardSelect($card, $image, card);
         });
         $board.append($card);
     });
+    let revertDefaultImageTimeout = setTimeout(function () {
+        $board.find(`img`, function ($image) {
+            $image.attr('src', defaultCardImageSource);
+        });
+        clearTimeout(revertDefaultImageTimeout);
+    }, 1000);
 }
 
 /** 
