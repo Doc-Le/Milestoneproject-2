@@ -1,0 +1,11 @@
+#board img.img-width {
+    width: 75%;
+  }
+  
+  
+  #score,
+  #moves,
+  #timer {
+    font-weight: bolder;
+    margin-left: 10px;
+  }
