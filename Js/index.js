@@ -38,6 +38,8 @@ const splashScreenTimeout = 2000;
 /** Game time interval 3 minutes in seconds */
 const gameTimeInterval = 180;
 const defaultCardImageSource = 'images/logo.svg';
+/** Default game context object */
+const defaultGameContext = { player: 'N/A', moves: 0, lives: 6, time: gameTimeInterval, score: 0 };
 /** Board has 8 duplicated shuffled cards */
 let board = [];
 /** Cached data object from local storage */
@@ -45,7 +47,7 @@ let cacheData = {};
 /** Cards has 8 random cards */
 let cards = [];
 /** Game context object */
-let gameContext = {};
+let gameContext = defaultGameContext;
 /** Game time interval object */
 let gameTimeIntervalId;
 
@@ -123,7 +125,7 @@ function quit() {
     // clean all variables
     board = [];
     cards = [];
-    gameContext = {};
+    gameContext = defaultGameContext;
 }
 
 /** Function to restart game */
@@ -362,6 +364,19 @@ function updateLives() {
     }
     // update lives in game context object
     gameContext.lives = lives;
+}
+
+/** Function to update score counter based on lives, moves and time */
+function updateScore() {
+    const moves = gameContext.moves;
+    const lives = gameContext.lives;
+    const time = gameContext.time;
+    // calculate score value
+    const score = parseInt((moves + lives) * time);
+    // update score DOM counter
+    $score.text(score);
+    // update score in game context object
+    gameContext.score = score;
 }
 
 /** JQuery detects state of readiness and call initilize */
