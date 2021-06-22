@@ -142,7 +142,7 @@ function savePlayerName() {
 /** Function to start card board */
 function startBoard() {
     getNewCards();
-    shuffleBoardCards();
+    shuffleBoard();
     loadBoardElemets();
     startCounters();
     startTimer();
@@ -202,14 +202,21 @@ function getNewCards() {
     cards = cards.concat(cards);
 }
 
-/** Function to shuffle board cards random */
-function shuffleBoardCards() {
-    board = cards.reduce(function (acc, cur) {
-        const index = cards.length * Math.random() | 0;
-        cur.index = index;
-        acc[index] = cur;
-        return acc;
-    }, []);
+/** Function to shuffle board cards randomly */
+function shuffleBoard() {
+    board = cards;
+    let counter = board.length;
+    // while there are items in the array
+    while (counter > 0) {
+     // pick a random index
+     const index = Math.floor(Math.random() * counter);
+     // decrease counter by 1
+     counter--;
+     // and swap the last item index with it
+     const temp = board[counter];
+     board[counter] = board[index];
+     board[index] = temp;
+    }
 }
 
 /** 
@@ -223,25 +230,54 @@ function getArrayFrom(size) {
 
 /** Function to load board DOM elements */
 function loadBoardElemets() {
-    board.forEach(function (card, index) {
-        const $image = $(`<img src="${card.src}" class="img-fluid img-width" alt="Click to play" />`);
-        const $card = $(`<div class="col d-flex align-items-start"></div>`);
-        $card.append($image)
-            .on('click', function () {
-                $image.attr('src', card.src);
-                const selectedCards = board.filter(function (filterCard) {
-                    return filterCard.selected && !filterCard.matched;
-                });
-                board[index].selected = true;
-                if (!selectedCards.length) {
-                    return;
-                }
-                // validate cards matching
-                // update matched properties
-                // update counters
-            });
+    $board.empty();
+    board.forEach(function (card) {
+        const $image = $(`<img id="image${card.index}" src="${card.src}" class="img-fluid img-width" alt="Click to play" />`);
+        const $card = $(`<div id="card${card.index}" class="col d-flex align-items-start"></div>`);
+        $card.append($image);
+        // click event to select and validating matched card
+        $card.on('click', function () {
+            cardSelect($card, $image, card);
+        });
         $board.append($card);
-    })
+    });
+}
+
+/** 
+ * Function to select select and validating matched card when clicked 
+ * @param $card card element
+ * @param $image card image element
+ * @param card card object
+ */
+function cardSelect($card, $image, card) {
+    // if card matched won't do anything and exit function
+    if (card.matched) {
+        return;
+    }
+    // set image card source
+    $image.attr('src', card.src);
+    // seach for all selected cards in board array
+    const selectedCards = board.filter(function (boardCard) {
+        return boardCard.selected;
+    });
+    // if no selected cards
+    if (selectedCards.length == 0) {
+        // select current card
+        card.selected = true;
+        return;
+    } 
+    const selectedCard = selectedCards[0];
+    if (selectedCard.id == card.id) {
+        console.log('cards matched');
+        // set both cards object matched property to true
+        selectedCard.matched = true;
+        card.matched = true;
+        // set both cards object matched property to true
+    }
+    // update counters
+    // unselect both cards
+    selectedCard.selected = false;
+    card.selected = false;
 }
 
 /** Function to load top 3 player from cache */
