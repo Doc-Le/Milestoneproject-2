@@ -25,6 +25,8 @@ const $scoresButton = $('#scores');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
 const $modalWin = $('#modalWin');
+const $modalGameOver = $('#modalGameOver');
+const $gameOverMessage = $('#gameOverMessage');
 const baseScoreValue = 100;
 const numberOfAvailableCards = 50;
 const numberOfUniqueCards = 8;
@@ -125,14 +127,20 @@ function showGamePanel() {
     $quitButton.show();
 }
 
-/** 
- * Function to show modal win 
- */
+/** Function to show modal win */
 function showModalWin() {
     // get modal object using bootstrap api library
     const modalWin = new bootstrap.Modal($modalWin[0], { keyboard: false });
     // showing winning modal window
     modalWin.show()
+}
+
+/** Function to show modal game over */
+function showModalGameOver() {
+    // get modal object using bootstrap api library
+    const modalGameOver = new bootstrap.Modal($modalGameOver[0], { keyboard: false });
+    // showing game over modal window
+    modalGameOver.show()
 }
 
 /** Function to start playing game */
@@ -145,12 +153,7 @@ function play() {
 /** Function to quit game and return to menu panel */
 function quit() {
     showMenuPanel();
-    // clean all DOM elements
-    $board.empty();
-    // clean all variables
-    board = [];
-    cards = [];
-    // restart game context
+    resetBoard();
     restart();
 }
 
@@ -175,6 +178,7 @@ function savePlayerName() {
 
 /** Function to start card board */
 function startBoard() {
+    resetBoard();
     getNewCards();
     shuffleBoard();
     loadBoardElemets();
@@ -436,7 +440,10 @@ function gameOver(timedOut = false) {
     if (timedOut) {
         message = 'Game timed out!'
     }
+    // set game over element message
+    $gameOverMessage.text(message);
     // show popup modal game over message, buttons try again and leave
+    showModalGameOver();
 }
 
 /** Function to update all counters as moves, lives, score */
@@ -550,6 +557,15 @@ function updateCacheData() {
         const cacheDataString = JSON.stringify(cacheData);
         storage.setItem(localStorageGameKey, cacheDataString);
     }
+}
+
+/** Function to reset board variables and DOM elements */
+function resetBoard() {
+    // clean all DOM elements
+    $board.empty();
+    // clean all variables
+    board = [];
+    cards = [];
 }
 
 /** JQuery detects state of readiness and call initilize */
