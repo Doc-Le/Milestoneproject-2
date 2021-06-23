@@ -82,7 +82,7 @@ function init() {
 
 /** Function to attach event to all DOM elements */
 function attachEvents() {
-    $playButton.on('click', play);
+    // $playButton.on('click', play);
     $exitButton.on('click', quit);
     $restartButton.on('click', restart);
     $saveButton.on('click', savePlayerName);
@@ -117,7 +117,7 @@ function showMenuPanel() {
 /** Function to show game and hide menu panel */
 function showGamePanel() {
     // Show/hide panels
-    toggleElements($gamePanel, $menuPanel);
+    toggleElements($menuPanel, $gamePanel);
     // Show header action buttoms when menu visible
     $restartButton.show();
     $quitButton.show();
