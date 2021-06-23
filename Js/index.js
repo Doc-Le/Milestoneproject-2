@@ -17,6 +17,7 @@ const $timer = $('#timer');
 const $topScores = $('#topScores');
 const $playButton = $('#play');
 const $quitButton = $('#quit');
+const $exitButton = $('#exit');
 const $restartButton = $('#restart');
 const $saveButton = $('#save');
 const $gamePanel = $('#gamePanel');
@@ -77,7 +78,7 @@ function init() {
 /** Function to attach event to all DOM elements */
 function attachEvents() {
     $playButton.on('click', play);
-    $quitButton.on('click', quit);
+    $exitButton.on('click', quit);
     $restartButton.on('click', restart);
     $saveButton.on('click', savePlayerName);
 }
@@ -368,16 +369,22 @@ function loadTopScores() {
         return b.score - a.score;
     });
     // set top 3 scores
-    for(let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
         if (!scores[i]) {
             break;
         }
         const item = scores[i];
         // create jquery element row
-        const $row = $(`<tr><th scope="row">${i+1}</th><td>${item.player}</td><td>${item.score}</td></tr>`);
+        const $row = $(`
+        <tr>
+            <th scope="row">${i + 1}</th>
+            <td>${item.player}</td>
+            <td>${item.score}</td>
+        </tr>
+        `);
         // append jquery element row to top scores table body
         $topScores.append($row);
-    }    
+    }
 }
 
 /** 
@@ -481,24 +488,24 @@ function calculateFinalScore() {
 }
 
 /** Function to update cache data in localStorage */
-function updateCacheData () {
+function updateCacheData() {
     if (!Object.keys(cacheData).length) {
         // default cache data object
-        cacheData = { 
+        cacheData = {
             scores: [
                 { player: 'Mark', score: 1000 },
                 { player: 'Anne', score: 234 },
                 { player: 'Josef', score: 2500 },
                 { player: 'Rodrigo', score: 3000 },
-            ], 
-            players: [] 
+            ],
+            players: []
         };
     }
     const storage = window.localStorage;
     // initlaize localStorage if empty
     if (!storage.length || !storage.getItem(localStorageGameKey)) {
         // convert object in string
-        const cacheDataString =  JSON.stringify(cacheData);
+        const cacheDataString = JSON.stringify(cacheData);
         storage.setItem(localStorageGameKey, cacheDataString);
     }
 }
