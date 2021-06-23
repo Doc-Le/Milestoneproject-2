@@ -64,29 +64,56 @@ Languages Used
 *Design
 
   •	Color Scheme
-                 - The two main colors used are Black and white 
+                - The two main colors used are Black and white.
   •	Typography 
 
                 - Default Bootstrap 5 web font family - reference Https://getbootstrap.com/docs/5.0/content/reboot/#native-font-stack.
 
 
 *Frameworks, Libraries & Programs Used
-  
-  
 
+   1. Bootstrap 4.4.1:
+
+      . Bootstrap was used to assist with the responsiveness and  styling of the game.
+   
+   2. JDoc:
+
+      . jsDoc  were used to get array from. 
+   
+   3. jQuery: 
+
+      .jQuery were used to make buttons and      containers.
+
+   4. Git:
+
+      .Git was used for version control by utilizing the IDE terminal to commit to git and push to GitHub.      
+
+   5. GitHub:
+   
+      .GitHub is used to store the project after being pushed from Git.
+
+*Testing
+
+The W3C Markup Validator and W3C CSS Validator Services were used to validate every page of the project to ensure there were no syntax errors in the project.
+
+      .W3C Markup Validator - [Results](http://jigsaw.w3.org/css-validator/validator$link)
+      .W3C CSS Validator - Results
+
+
+  
+  
 *Testing User Stories from User Experience Section
   
   •	First Time players Goals
 
     a.	Upon entering the game, user is automatically greeted with an easily visible center page panel. 
-    b.	Over the top of the panel tile figures, you can find number of moves in heart shape symbols, scpre and time left.
+    b.	Over the top of the panel tile figures, you can find number of moves in heart shape symbols, score and time left.
     c.	The player has the options to subscribe his name for further record.
-    d. 
 
 *Further Testing
 
-  •	The memory game was tested on Google Chrome, Microsoft Edge, and Safari browsers.
-  •	The memory game was viewed on a variety of devices such as Desktop, Laptop, IPhone7, IPhone8.
+   •	The memory game was tested on Google Chrome, Microsoft Edge, and Safari browsers.
+   •	The memory game was viewed on a variety of devices such as Desktop, Laptop, IPhone7, IPhone8.
 
 *Known Bugs
 
@@ -94,33 +121,32 @@ Languages Used
 
 The project was deployed to GitHub Pages using the following steps: 
 
-  •	Log in to GitHub and locate the GitHub Repository.
-  •	At the top of the Repository (not top of the page), locate the “Settings” Button on the menu.
-  •	Scroll down the Setting page until you locate the “GitHub Pages” Section.
-  •	Under “Source”, click the dropdown called “None” and select “Master Branch”.
-  •	The Page will automatically refresh.
-  •	Scroll back down through the page to locate the now published site Link in the “GitHub Pages” section.
+    •	Log in to GitHub and locate the GitHub Repository.
+    •	At the top of the Repository (not top of the page), locate the “Settings” Button on the menu.
+    •	Scroll down the Setting page until you locate the “GitHub Pages” Section.
+    •	Under “Source”, click the dropdown called “None” and select “Master Branch”.
+    •	The Page will automatically refresh.
+    •	Scroll back down through the page to locate the now published site Link in the “GitHub Pages” section.
 
 *How to Run
 
   •	Clone the Repository.
   •	Pen index.html file to view the project in your browser.
 
-Credits 
+*Code
 
-Code
   •	Image
   •	Bootstrap4:
   •	Web Docs:
 
-Content
+*Content
 
   •	All content was written by the developer.
 
-Media
+*Media
 
   •	All images found (source)
 
-Acknowledgements
+
 
 
