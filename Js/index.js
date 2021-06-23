@@ -26,6 +26,7 @@ const numberOfAvailableCards = 50;
 const numberOfUniqueCards = 8;
 const totalNumberOfLives = 6;
 const cardsAvailable = 50;
+const localStorageGameKey = 'cmgData';
 /** All 50 card objects available */
 const allCards = getArrayFrom(numberOfAvailableCards).map(function (_, index) {
     // Return card object
@@ -460,6 +461,21 @@ function calculateFinalScore() {
     }
     // calculate final score value
     gameContext.finalScore = parseInt(gameContext.score + gameContext.extraScore);
+}
+
+/** Function to update cache data in localstorage */
+function updateCacheData () {
+    if (!Object.keys(cacheData).length) {
+        // default cache data object
+        cacheData = { scores: [], players: [] };
+    }
+    const storage = window.localStorage;
+    // initlaize localstorage if empty
+    if (!storage.length || !storage.getItem(localStorageGameKey)) {
+        // convert object in string
+        const cacheDataString =  JSON.stringify(cacheData);
+        storage.setItem(localStorageGameKey, cacheDataString);
+    }
 }
 
 /** JQuery detects state of readiness and call initilize */
