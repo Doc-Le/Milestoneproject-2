@@ -1,33 +1,34 @@
-#score,
-#moves,
-#timer {
-  font-weight: bolder;
-  margin-left: 10px;
-}
-
+/* heart icons color red */
 #live1,
 #live2,
 #live3 {
-  color: red;
+  color: #ff0000;
 }
 
 
-/* set board cards default cursor styles */
+/* default cursor styles */
 div.board-card {
   cursor: default;
 }
 
+/* hand cursor styles */
 div.board-card:hover {
   cursor: pointer;
 }
 
-/* set board cards images thumbnail style when started or matched */
-div.board-card > img.img-thumbnail {
+/* board cards images thumbnail style when started */
+div.board-card>img.img-thumbnail {
   width: 75%;
   border-width: 5px;
   border-color: transparent;
 }
 
-div.board-card.matched > img.img-thumbnail {
+/* board cards images thumbnail style when mouse hovered */
+div.board-card:hover>img.img-thumbnail {
+  border-color: #ededed;
+}
+
+/* board cards images thumbnail style when matched */
+div.board-card.matched>img.img-thumbnail {
   border-color: #00c119;
 }
