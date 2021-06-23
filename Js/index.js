@@ -476,7 +476,7 @@ function gameWin() {
     // if has record score on top 20, show player record form
     if (hasRecordScore()) {
         // record score winner message
-        winMessage = `You won! also belong to top 20 record scores.<br />
+        winMessage = `You won! also belong to top 20 record scores of <strong>${gameContext.finalScore}</strong>.<br />
         Please, provide your name to be included in this select group.<br />
         You have a great memory!`;
         showPlayerRecordForm();
@@ -486,6 +486,8 @@ function gameWin() {
     }
     // set win message HTML jquery element
     $winMessage.empty().html(winMessage);
+    // calculate final game score
+    calculateFinalScore();
     // show modal win
     showModalWin();
 }
@@ -636,14 +638,11 @@ function updateScore() {
 
 /** Function to calculate final game score */
 function calculateFinalScore() {
-    // if game matched all 8 cards it should calculate extra points
-    if (gameContext.matched == numberOfUniqueCards) {
-        const moves = Math.round(gameContext.moves / numberOfUniqueCards);
-        const lives = gameContext.lives;
-        const time = gameTimeInterval - gameContext.time;
-        // calculate extra score
-        gameContext.extraScore = (moves + lives + time) * baseScoreValue;
-    }
+    const moves = Math.round(gameContext.moves / numberOfUniqueCards);
+    const lives = gameContext.lives;
+    const time = gameTimeInterval - gameContext.time;
+    // calculate extra score
+    gameContext.extraScore = (moves + lives + time) * baseScoreValue;
     // calculate final score value
     gameContext.finalScore = parseInt(gameContext.score + gameContext.extraScore);
 }
@@ -720,7 +719,7 @@ function updateRecordScores() {
     // remove any last item from lower record scores if any
     lowerScores.pop();
     // new record score 
-    const score = { player: gameContext.player, score: gameContext.score };
+    const score = { player: gameContext.player, score: gameContext.finalScore };
     // concatenate new record scores in between high and low
     const scores = higherScores.concat([score]).concat(lowerScores);
     // assign new record scores to cache data scores
@@ -732,7 +731,7 @@ function updateRecordScores() {
 /** Function to reset board variables and DOM elements */
 function resetBoard() {
     // restart game context object
-    gameContext = Object.assign({}, defaultGameContext);
+    gameContext = cloneObject(defaultGameContext);
     // clean all DOM elements
     $board.empty();
     // clean all variables
