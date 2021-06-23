@@ -55,7 +55,7 @@ const defaultGameContext = {
 };
 /** Board has 8 duplicated shuffled cards */
 let board = [];
-/** Cached data object from local storage */
+/** Cached data object from localStorage */
 let cacheData = {};
 /** Cards has 8 random cards */
 let cards = [];
@@ -154,7 +154,7 @@ function restart() {
 
 /** Function to save player name from form in cache */
 function savePlayerName() {
-    // save form input player name in local storage players
+    // save form input player name in localStorage players
     // clear form input player name
 }
 
@@ -359,8 +359,25 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
 
 /** Function to load top 3 player from cache */
 function loadTopScores() {
-    // get cached scores
-    // $topScores append elements to each score
+    // empty top scores board 
+    $topScores.empty();
+    // update cache data from localStorage
+    updateCacheData();
+    // sort scores by biggest score
+    const scores = cacheData.scores.sort(function (a, b) {
+        return b.score - a.score;
+    });
+    // set top 3 scores
+    for(let i = 0; i < 3; i++) {
+        if (!scores[i]) {
+            break;
+        }
+        const item = scores[i];
+        // create jquery element row
+        const $row = $(`<tr><th scope="row">${i+1}</th><td>${item.player}</td><td>${item.score}</td></tr>`);
+        // append jquery element row to top scores table body
+        $topScores.append($row);
+    }    
 }
 
 /** 
@@ -463,14 +480,22 @@ function calculateFinalScore() {
     gameContext.finalScore = parseInt(gameContext.score + gameContext.extraScore);
 }
 
-/** Function to update cache data in localstorage */
+/** Function to update cache data in localStorage */
 function updateCacheData () {
     if (!Object.keys(cacheData).length) {
         // default cache data object
-        cacheData = { scores: [], players: [] };
+        cacheData = { 
+            scores: [
+                { player: 'Mark', score: 1000 },
+                { player: 'Anne', score: 234 },
+                { player: 'Josef', score: 2500 },
+                { player: 'Rodrigo', score: 3000 },
+            ], 
+            players: [] 
+        };
     }
     const storage = window.localStorage;
-    // initlaize localstorage if empty
+    // initlaize localStorage if empty
     if (!storage.length || !storage.getItem(localStorageGameKey)) {
         // convert object in string
         const cacheDataString =  JSON.stringify(cacheData);
