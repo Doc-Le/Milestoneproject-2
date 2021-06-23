@@ -16,17 +16,19 @@ const $score = $('#score');
 const $timer = $('#timer');
 const $allScores = $('#allScores');
 const $topScores = $('#topScores');
-const $playButton = $('#play');
-const $quitButton = $('#quit');
+const $headerActions = $('#headerActions');
 const $exitButton = $('#exit');
-const $restartButton = $('#restart');
 const $saveButton = $('#save');
-const $scoresButton = $('#scores');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
 const $modalWin = $('#modalWin');
 const $modalGameOver = $('#modalGameOver');
+const $winMessage = $('#winMessage');
 const $gameOverMessage = $('#gameOverMessage');
+const $playerNameInput = $('#playerName');
+const $selectPlayerName = $('#selectPlayerName');
+const $playerNamePanel = $('#playerNamePanel');
+const $selectPlayerNamePanel = $('#selectPlayerNamePanel');
 const baseScoreValue = 100;
 const numberOfAvailableCards = 50;
 const numberOfUniqueCards = 8;
@@ -82,11 +84,8 @@ function init() {
 
 /** Function to attach event to all DOM elements */
 function attachEvents() {
-    // $playButton.on('click', play);
     $exitButton.on('click', quit);
-    $restartButton.on('click', restart);
     $saveButton.on('click', savePlayerName);
-    $scoresButton.on('click', loadAllScores);
 }
 
 /** Function to show splash and transition to main screen */
@@ -110,8 +109,7 @@ function showMenuPanel() {
     // Show/hide panels
     toggleElements($gamePanel, $menuPanel);
     // Hide header action buttoms when menu visible
-    $restartButton.hide();
-    $quitButton.hide();
+    $headerActions.hide();
 }
 
 /** Function to show game and hide menu panel */
@@ -119,8 +117,7 @@ function showGamePanel() {
     // Show/hide panels
     toggleElements($menuPanel, $gamePanel);
     // Show header action buttoms when menu visible
-    $restartButton.show();
-    $quitButton.show();
+    $headerActions.show();
 }
 
 /** Function to show modal win */
@@ -441,12 +438,8 @@ function loadAllScores() {
     $allScores.empty();
     // update cache data from localStorage
     updateCacheData();
-    // sort scores by biggest score
-    const scores = cacheData.scores.sort(function (a, b) {
-        return b.score - a.score;
-    });
     // list each score player
-    scores.forEach(function (item, index) {
+    cacheData.scores.forEach(function (item, index) {
         // create jquery element row
         const $row = $(`
         <tr>
@@ -465,6 +458,8 @@ function gameWin() {
     if (gameContext.matched != numberOfUniqueCards) {
         return;
     }
+    // load existing player name list
+    // show or hide select player name panel
     // show modal win
     showModalWin();
 }
@@ -589,6 +584,23 @@ function updateCacheData() {
             players: []
         };
     }
+    // sort scores by desc score
+    const scores = cacheData.scores.sort(function (a, b) {
+        return b.score - a.score;
+    });
+    cacheData.scores = cloneObject(scores);
+    // set unit player name list from scores
+    cacheData.players = scores.reduce(function (acc, cur) {
+        // find name in temp array
+        const playerExists = acc.find(function (player) {
+            return player.toLowerCase() === cur.player.toLowerCase();
+        });
+        // check if player exists in temp array before push
+        if (!playerExists) {
+            acc.push(cur.player);
+        }
+        return acc;
+    }, []);
     const storage = window.localStorage;
     // initlaize localStorage if empty
     if (!storage.length || !storage.getItem(localStorageGameKey)) {
