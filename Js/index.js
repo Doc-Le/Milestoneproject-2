@@ -58,7 +58,7 @@ let cacheData = {};
 /** Cards has 8 random cards */
 let cards = [];
 /** Game context object */
-let gameContext = defaultGameContext;
+let gameContext = Object.assign({}, defaultGameContext);
 /** Game time interval object */
 let gameTimeIntervalId;
 /** Store first card seleced before checking if matches */
@@ -140,7 +140,7 @@ function quit() {
 /** Function to restart game */
 function restart() {
     // restart game context object
-    gameContext = defaultGameContext;
+    gameContext = Object.assign({}, defaultGameContext);
     // clear time interval if exists
     if (gameTimeIntervalId) {
         clearInterval(gameTimeIntervalId);
@@ -269,7 +269,7 @@ function loadBoardElemets() {
     // load each board card element
     board.forEach(function (card) {
         const $image = $(`<img id="img${card.uniqueId}" src="${defaultCardImageSource}" class="img-fluid img-width" alt="Click to play" />`);
-        const $card = $(`<div id="card${card.uniqueId}" class="col d-flex align-items-start"></div>`)
+        const $card = $(`<div id="card${card.uniqueId}" class="col d-flex align-items-center"></div>`)
             .append($image);
         // click event to select and validating matched card
         $card.on('click', function () {
@@ -316,7 +316,7 @@ function cardSelect($card, $image, card) {
         board[board.indexOf(firstCardSelected)] = Object.assign({}, firstCardSelected);
         board[board.indexOf(card)] = Object.assign({}, card);
         // clear first selected card variable
-        firstCardSelected = undefined;        
+        firstCardSelected = undefined;
     } else {
         // set board busy
         boardBusy = true;
@@ -333,7 +333,7 @@ function cardSelect($card, $image, card) {
             board[board.indexOf(firstCardSelected)] = Object.assign({}, firstCardSelected);
             board[board.indexOf(card)] = Object.assign({}, card);
             // clear first selected card variable
-            firstCardSelected = undefined;        
+            firstCardSelected = undefined;
             // release board busy
             boardBusy = false;
         }, 2000);
