@@ -91,7 +91,8 @@ function attachEvents() {
 
 /** Function to show splash and transition to main screen */
 function showSplashScreen() {
-    toggleElements($main, $splash);
+    $splash.show();
+    $main.hide();
     const hideSplashScreenTimeout = setTimeout(function () {
         showMainScreen();
         clearTimeout(hideSplashScreenTimeout);
@@ -100,7 +101,8 @@ function showSplashScreen() {
 
 /** Function to show main and hide splash screen */
 function showMainScreen() {
-    toggleElements($splash, $main);
+    $splash.hide();
+    $main.show();
     showMenuPanel();
 }
 
@@ -108,7 +110,8 @@ function showMainScreen() {
 function showMenuPanel() {
     loadTopScores();
     // Show/hide panels
-    toggleElements($gamePanel, $menuPanel);
+    $gamePanel.hide();
+    $menuPanel.show();
     // Hide header action buttoms when menu visible
     $restartButton.hide();
     $quitButton.hide();
@@ -117,7 +120,8 @@ function showMenuPanel() {
 /** Function to show game and hide menu panel */
 function showGamePanel() {
     // Show/hide panels
-    toggleElements($gamePanel, $menuPanel);
+    $gamePanel.show();
+    $menuPanel.hide();
     // Show header action buttoms when menu visible
     $restartButton.show();
     $quitButton.show();
@@ -318,7 +322,8 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
         return;
     }
     // set image card source
-    toggleElements($cardImageDefault, $cardImage);
+    $cardImageDefault.hide();
+    $cardImage.show();
     // if no selected cards
     if (!firstCardSelected) {
         // set current card selected
@@ -351,15 +356,15 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
         board[board.indexOf(card)] = Object.assign({}, card);
         // clear first selected card variable
         firstCardSelected = undefined;
-        // check is game winner
-        gameWin();
     } else {
         // set board busy
         boardBusy = true;
         const timeoutUnmatchedCards = setTimeout(function () {
             // set image card source
-            toggleElements($cardImage, $cardImageDefault);
-            toggleElements($firstCardImage, $firstCardImageDefault);
+            $cardImage.hide();
+            $firstCardImage.hide();
+            $cardImageDefault.show();
+            $firstCardImageDefault.show();
             // clear timeout 
             clearTimeout(timeoutUnmatchedCards);
             // unselect both cards
@@ -376,16 +381,6 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
     }
     // update all counters after validation
     updateCounters();
-}
-
-/** 
- * Function to toggle elements 
- * @param $hide hide element
- * @param $show show element
- */
-function toggleElements($hide, $show) {
-    $hide.hide();
-    $show.show();
 }
 
 /** Function to load top 3 score players from cache */
@@ -440,15 +435,6 @@ function loadAllScores() {
         // append jquery element row to top scores table body
         $allScores.append($row);
     });
-}
-
-/** Function to end the game and notify player */
-function gameWin() {
-     if (gameContext.matched != numberOfUniqueCards) {
-         return;
-     }
-    // show modal win
-    showModalWin();
 }
 
 /** 
