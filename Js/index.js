@@ -66,7 +66,7 @@ let cacheData = {};
 /** Cards has 8 random cards */
 let cards = [];
 /** Game context object */
-let gameContext = Object.assign({}, defaultGameContext);
+let gameContext = cloneObject(defaultGameContext);
 /** Game time interval object */
 let gameTimeIntervalId;
 /** Store first card seleced before checking if matches */
@@ -323,7 +323,7 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
     if (!firstCardSelected) {
         // set current card selected
         card.selected = true;
-        firstCardSelected = Object.assign({}, card);
+        firstCardSelected = cloneObject(card);
         return;
     }
     // increment game context moves by 1
@@ -347,8 +347,8 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
         firstCardSelected.selected = false;
         card.selected = false;
         // update board cards
-        board[board.indexOf(firstCardSelected)] = Object.assign({}, firstCardSelected);
-        board[board.indexOf(card)] = Object.assign({}, card);
+        board[board.indexOf(firstCardSelected)] = cloneObject({}, firstCardSelected);
+        board[board.indexOf(card)] = cloneObject({}, card);
         // clear first selected card variable
         firstCardSelected = undefined;
         // check is game winner
@@ -366,8 +366,8 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
             firstCardSelected.selected = false;
             card.selected = false;
             // update board cards
-            board[board.indexOf(firstCardSelected)] = Object.assign({}, firstCardSelected);
-            board[board.indexOf(card)] = Object.assign({}, card);
+            board[board.indexOf(firstCardSelected)] = cloneObject(firstCardSelected);
+            board[board.indexOf(card)] = cloneObject(card);
             // clear first selected card variable
             firstCardSelected = undefined;
             // release board busy
@@ -386,6 +386,21 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
 function toggleElements($hide, $show) {
     $hide.hide();
     $show.show();
+}
+
+/** 
+ * Function to clone object without reference 
+ * @param $data data object to clone
+ */
+ function cloneObject(data) {
+     // check if data is an array
+     if (Array.isArray(data)) {
+         return Object.assign([], data);
+     // check if data is an object
+     } else if (typeof data === 'object') {
+        return Object.assign({}, data);
+     }
+     return data;
 }
 
 /** Function to load top 3 score players from cache */
