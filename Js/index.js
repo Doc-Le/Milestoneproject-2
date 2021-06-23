@@ -356,6 +356,8 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
         board[board.indexOf(card)] = Object.assign({}, card);
         // clear first selected card variable
         firstCardSelected = undefined;
+        // check is game winner
+        gameWin();
     } else {
         // set board busy
         boardBusy = true;
@@ -435,6 +437,15 @@ function loadAllScores() {
         // append jquery element row to top scores table body
         $allScores.append($row);
     });
+}
+
+/** Function to end the game and notify player */
+ function gameWin() {
+     if (gameContext.matched != numberOfUniqueCards) {
+         return;
+     }
+    // show modal win
+    showModalWin();
 }
 
 /** 
