@@ -154,17 +154,12 @@ function play() {
 function quit() {
     showMenuPanel();
     resetBoard();
-    restart();
 }
 
 /** Function to restart game */
 function restart() {
     // restart game context object
     gameContext = Object.assign({}, defaultGameContext);
-    // clear time interval if exists
-    if (gameTimeIntervalId) {
-        clearInterval(gameTimeIntervalId);
-    }
     loadBoardElemets();
     updateCounters();
     startTimer();
@@ -189,14 +184,15 @@ function startBoard() {
 /** Function to start game timer */
 function startTimer() {
     //set initial timer counter
-    $timer.text('3m 00s');
+    $timer.text();
     //set timer 3 minutes interval
     let interval = gameTimeInterval;
+    stopTimer();
     gameTimeIntervalId = setInterval(function () {
         interval--;
         if (interval < 0) {
             gameOver(true);
-            clearInterval(gameTimeIntervalId);
+            stopTimer();
             return;
         }
         if (interval >= 0) {
@@ -204,10 +200,21 @@ function startTimer() {
             gameContext.time = interval;
             const minutes = Math.floor(interval / 60);
             const seconds = interval % 60;
+            const time = `${minutes}m ${seconds}s`;
             //update game timer DOM
-            $timer.text(`${minutes}m ${seconds}s`);
+            $timer.text(time);
         }
     }, 1000);
+}
+
+/** Function to stop game timer */
+function stopTimer() {
+    // leaves function if interval doesn't exists
+    if (!gameTimeIntervalId) {
+        return;
+    }
+    // clear interval if exists
+    clearInterval(gameTimeIntervalId);
 }
 
 /** Function to get new random 8 unique cards and duplicate */
