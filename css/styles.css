@@ -6,6 +6,10 @@
 }
 
 
+#splash > img.img-fluid {
+  max-width: 250px;
+}
+
 /* default cursor styles */
 div.board-card {
   cursor: default;
