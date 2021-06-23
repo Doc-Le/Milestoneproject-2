@@ -17,8 +17,6 @@ const $timer = $('#timer');
 const $allScores = $('#allScores');
 const $topScores = $('#topScores');
 const $headerActions = $('#headerActions');
-const $exitButton = $('#exit');
-const $saveButton = $('#save');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
 const $modalWin = $('#modalWin');
@@ -59,7 +57,8 @@ const defaultGameContext = {
     extraScore: 0,
     finalScore: 0,
     score: 0,
-    matched: 0
+    matched: 0,
+    recordScore: false
 };
 /** Board has 8 duplicated shuffled cards */
 let board = [];
@@ -79,13 +78,6 @@ let boardBusy = false;
 /** Function to initialize game context */
 function init() {
     showSplashScreen();
-    attachEvents();
-}
-
-/** Function to attach event to all DOM elements */
-function attachEvents() {
-    $exitButton.on('click', quit);
-    $saveButton.on('click', savePlayerName);
 }
 
 /** Function to show splash and transition to main screen */
@@ -453,15 +445,85 @@ function loadAllScores() {
     });
 }
 
-/** Function to end the game and notify player */
+/** Function to game winner and notify player */
 function gameWin() {
+    // default winner message
+    let winMessage = `You won!<br />Your memory is very sharp!`;
     if (gameContext.matched != numberOfUniqueCards) {
         return;
     }
-    // load existing player name list
-    // show or hide select player name panel
+    // if has record score on top 20, show player record form
+    if (hasRecordScore()) {
+        // set game record
+        gameContext.recordScore = true;
+        // record score winner message
+        winMessage = `You won! also belong to top 20 record scores.<br />
+        Please, provide your name to be included in this select group.<br />
+        You have a great memory!`;      
+        showPlayerRecordForm();
+        $playerNamePanel.show();
+    } else {
+        $playerNamePanel.hide();
+    }
+    // set win message HTML jquery element
+    $winMessage.empty().html(winMessage);
     // show modal win
     showModalWin();
+}
+
+/** Function to show player record form to input players name */
+function showPlayerRecordForm() {
+    const invalidCssClass = 'is-invalid';
+    // player name input value capitalized
+    $playerNameInput.val('');
+    $playerNameInput.keypress(function () {
+        if (!$playerNameInput.val().length) {
+            return;
+        }
+        const text = $playerNameInput.val().toLowerCase();
+        $playerNameInput.val(`${text.charAt(0).toUpperCase()}${text.slice(1)}`);
+    });
+    // player name input validation
+    $playerNameInput.keyup(function () {
+        $playerNameInput.removeClass(invalidCssClass);
+        $selectPlayerName.removeClass(invalidCssClass);
+        // invalid if player name input text characters lengh less than 3
+        if ($playerNameInput.val().length < 3) {
+            $playerNameInput.addClass(invalidCssClass);
+        } else {
+            // update game context player name
+            gameContext.player = $playerNameInput.val();
+        }
+    });
+    // load select player name names
+    if (cacheData.players.length) {
+        const defaultValue = 'Select Player Name';
+        // select player name validation
+        $selectPlayerName.change(function () {
+            $selectPlayerName.removeClass(invalidCssClass);
+            $playerNameInput.removeClass(invalidCssClass);
+            // invalid if select player name option default value
+            if ($selectPlayerName.val() === defaultValue) {
+                $selectPlayerName.addClass(invalidCssClass);
+            } else {
+                // update game context player name
+                gameContext.player = $selectPlayerName.val();
+            }
+        });      
+        // Clear select DOM elements
+        $selectPlayerName.empty();
+        // load default select option
+        const $defaultOption = $(`<option selected>${defaultValue}</option>`);
+        $selectPlayerName.append($defaultOption);
+        // load existing player name select options
+        cacheData.players.forEach(function (player) {
+            const $option = $(`<option value="${player}">${player}</option>`);
+            $selectPlayerName.append($option);
+        });
+        $selectPlayerNamePanel.show();
+    } else {
+        $selectPlayerNamePanel.hide();
+    }
 }
 
 /** 
@@ -570,17 +632,13 @@ function calculateFinalScore() {
 /** Function to update cache data in localStorage */
 function updateCacheData() {
     if (!Object.keys(cacheData).length) {
+        // temp test 20 scores
+        const scores = getArrayFrom(20).map(function (_, index) {
+            return { player: `Player_${index + 1}`, score: 1000+index };
+        });
         // default cache data object
         cacheData = {
-            scores: [
-                { player: 'Mark', score: 1000 },
-                { player: 'Anne', score: 234 },
-                { player: 'Josef', score: 2500 },
-                { player: 'Rodrigo', score: 3000 },
-                { player: 'Leandro', score: 567 },
-                { player: 'Mary', score: 300 },
-                { player: 'Paul', score: 145 }
-            ],
+            scores: cloneObject(scores),
             players: []
         };
     }
@@ -608,6 +666,35 @@ function updateCacheData() {
         const cacheDataString = JSON.stringify(cacheData);
         storage.setItem(localStorageGameKey, cacheDataString);
     }
+}
+
+/** Function to check if game has record score */
+function hasRecordScore() {
+    // filter for lower record scores
+    const lowerScores = cacheData.scores.filter(function (record) {
+        return record.score <= gameContext.score;
+    });
+    return (lowerScores || []).length ? true : false;
+}
+
+/** Function to update record scores */
+function updateRecordScores() {
+    const higherScores = [];
+    const lowerScores = [];
+    // extract higher and lower by game record score record scores from cached data scores
+    cacheData.scores.forEach(function (record) {
+        if (record.score <= gameContext.score) {
+            lowerScores.push(record);
+        } else {
+            higherScores.push(record);
+        }
+    });
+    // remove any last item from lower record scores
+    lowerScores.pop();
+    // concatenate new record scores
+    const scores = higherScores.concat([gameContext.score]).concat(lowerScores);
+    // assign new record scores to cache data scores
+    cacheData.scores = cloneObject(scores);
 }
 
 /** Function to reset board variables and DOM elements */
