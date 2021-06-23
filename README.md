@@ -74,11 +74,11 @@ Languages Used
 
    1. Bootstrap 4.4.1:
 
-      . Bootstrap was used to assist with the responsiveness and  styling of the game.
+      .Bootstrap was used to assist with the responsiveness and  styling of the game.
    
    2. JDoc:
 
-      . jsDoc  were used to get array from. 
+      .jsDoc  were used to get array from. 
    
    3. jQuery: 
 
@@ -115,7 +115,6 @@ The W3C Markup Validator and W3C CSS Validator Services were used to validate ev
    •	The memory game was tested on Google Chrome, Microsoft Edge, and Safari browsers.
    •	The memory game was viewed on a variety of devices such as Desktop, Laptop, IPhone7, IPhone8.
 
-*Known Bugs
 
 *Deployment
 
@@ -145,7 +144,7 @@ The project was deployed to GitHub Pages using the following steps:
 
 *Media
 
-  •	All images found (source)
+  •	All images found [https://www.pinterest.ie/pin/277252920797320654/]
 
 
 
