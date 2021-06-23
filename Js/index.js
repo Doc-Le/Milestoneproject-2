@@ -294,16 +294,24 @@ function loadBoardElemets() {
     $board.empty();
     // load each board card element
     board.forEach(function (card) {
-        const $cardImageDefault = $(`<img id="imgDefault${card.uniqueId}" src="${defaultCardImageSource}" class="img-fluid img-width img-thumbnail" alt="Click to select" />`);
-        const $cardImage = $(`<img id="img${card.uniqueId}" src="${card.src}" class="img-fluid img-width img-thumbnail" alt="Image selected" />`).hide();
+        const $cardImageDefault = $(`<img id="imgDefault${card.uniqueId}" src="${defaultCardImageSource}" class="img-fluid img-width img-thumbnail image-default" alt="Click to select" />`).hide();
+        const $cardImage = $(`<img id="img${card.uniqueId}" src="${card.src}" class="img-fluid img-width img-thumbnail image-main" alt="Image selected" />`);
         const $card = $(`<div id="card${card.uniqueId}" class="col d-flex justify-content-center board-card"></div>`)
-            .append($cardImageDefault)
-            .append($cardImage);
+            .append($cardImage)
+            .append($cardImageDefault);
         // click event to select and validating matched card
         $card.on('click', function () {
             cardSelect($card, $cardImageDefault, $cardImage, card);
         });
         $board.append($card);
+
+        // 1.5 seconds quick glance timeout
+        const quickGlanceTimeout = 1500;
+        // set quick glance timeout
+        const quickGlance = setTimeout(function () {
+            toggleElements($cardImage, $cardImageDefault);
+            clearTimeout(quickGlance);
+        }, quickGlanceTimeout);    
     });
 }
 
@@ -711,7 +719,7 @@ function updateRecordScores() {
 /** Function to reset board variables and DOM elements */
 function resetBoard() {
     // restart game context object
-    gameContext = Object.assign({}, defaultGameContext);    
+    gameContext = Object.assign({}, defaultGameContext);
     // clean all DOM elements
     $board.empty();
     // clean all variables
