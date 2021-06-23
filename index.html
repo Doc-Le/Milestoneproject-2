@@ -158,6 +158,27 @@
             </div>
         </div>
     </div>
+    <!-- Modal win that shows winning the game -->
+    <div class="modal fade" id="modalWin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalWinLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalWinLabel">Congratulations</h5>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <i class="bi bi-trophy mx-2"></i>
+                        <label>Congratulations!</label>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="startBoard()">New Game</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="quit()">Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>    
 
     <!-- jQuery CDN – Latest Stable Version jQuery Core 3.6.0 slim minified -->
     <script src=" https://code.jquery.com/jquery-3.6.0.slim.min.js"
