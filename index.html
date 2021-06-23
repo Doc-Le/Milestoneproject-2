@@ -187,7 +187,28 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>  
+    <!-- Modal game over that shows when loses the game -->
+    <div class="modal fade" id="modalGameOver" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalGameOverLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalGameOverLabel">Game Over</h5>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <i class="bi bi-emoji-dizzy mx-2"></i>
+                        <label>Oops!</label>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="startBoard()">New Game</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="quit()">Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>        
 
     <!-- jQuery CDN – Latest Stable Version jQuery Core 3.6.0 slim minified -->
     <script src=" https://code.jquery.com/jquery-3.6.0.slim.min.js"
