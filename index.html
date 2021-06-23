@@ -60,7 +60,7 @@
             <div class="col-lg-6 mx-auto my-5">
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <button id="play" type="button" class="btn btn-primary">Play</button>
-                    <button id="scores" type="button" class="btn btn-outline-secondary">Scores</button>
+                    <button id="scores" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalScores">Scores</button>
                     <button id="rules" type="button" class="btn btn-outline-secondary">Rules</button>
                 </div>
             </div>
@@ -99,6 +99,25 @@
             </div>
         </div>
     </div>
+    <!-- Modal scores that lists all available cached scores -->
+    <div class="modal fade" id="modalScores" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalScoresLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalScoresLabel">Game Scores</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
     <!-- jQuery CDN – Latest Stable Version jQuery Core 3.6.0 slim minified -->
     <script src=" https://code.jquery.com/jquery-3.6.0.slim.min.js"
         integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
