@@ -628,10 +628,6 @@ function updateLives() {
 
 /** Function to update score counter based on lives, moves, time and matched cards */
 function updateScore() {
-    // do nothing is score is zero or null
-    if (!gameContext.score) {
-        return;
-    }
     // update score DOM counter
     $score.text(gameContext.score);
 }
@@ -693,13 +689,13 @@ function updateCacheData() {
 
 /** Function to check if game has record score */
 function hasRecordScore() {
-    // if no scores any new score will be a recod
-    if (!cacheData.scores.length) {
+    // if scores less eqaul 10 than any new score will be a recod
+    if (cacheData.scores.length <= 10) {
         return true;
     }
     // filter for lower record scores
     const lowerScores = cacheData.scores.filter(function (record) {
-        return record.score <= gameContext.score;
+        return record.score <= gameContext.finalScore;
     });
     return (lowerScores || []).length ? true : false;
 }
