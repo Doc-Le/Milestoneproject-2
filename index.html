@@ -28,20 +28,15 @@
     <div id="main" class="container">
         <!-- Header to keep showing logo, title and some action buttoms -->
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-            <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <img class="d-block mx-auto me-2" src="images/logo.svg" alt="Comics Memory Game" width="30"
+            <div class="col-sm-6 d-flex text-dark text-decoration-none justify-content-center">
+                <img class="me-2" src="images/logo.svg" alt="Comics Memory Game" width="30"
                     height="30" />
-            </div>
-            <div class="col-sm-6 text-center">
                 <span class="fs-4">Comics Memory Game</span>
-            </div>
-            <div class="col-sm-3 text-end">
-                <!-- Header action buttoms when game is in progress -->
-                <div id="headerActions">
+                <div id="headerActions" class="ms-4">
                     <button type="button" class="btn btn-outline-primary me-2" onclick="restart()">Restart</button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#modalQuit">Quit</button>
-                </div>
+                </div>               
             </div>
         </header>
         <!-- Menu panel shows top 3 scores, start playing the game, show all scores and about the game -->
@@ -144,21 +139,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <ul class="list-unstyled">
-                        <li>The memory game consists of fifth cards arranged randomly in a grid. The deck is made up of eight different pairs of cards, each with different symbols on one side.</li>
-                        <p></p>
-                        <li>Each turn:</li>
-                          <ul>
-                            <li>When it starts, you will have about 1.5 seconds to help you memorize the comics' characters.</li>
-                            <li>A player flips one card over to reveal its underlying comics character.</li>
-                            <li>The player then turns over a second card, trying to find the corresponding card with the same comics character.</li>
-                            <li>If the cards match, both cards stay flipped over.</li>
-                            <li>If the cards do not match, both cards are returned to their initial hidden state.</li>
-                        </ul>
-                        </li>
-                        <p></p>
-                        <li>The game ends once all cards have been correctly matched.</li>
-                      </ul>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -195,11 +176,15 @@
                     <h5 class="modal-title" id="modalWinLabel">Congratulations</h5>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <i class="bi bi-trophy mx-2"></i>
-                        <label>Congratulations!</label>
-                        <p id="winMessage"></p>
-                    </div>
+                    <figure class="text-center">
+                        <blockquote class="blockquote">
+                            <i class="bi bi-trophy mx-2"></i>
+                            <label>Congratulations!</label>
+                        </blockquote>
+                        <figcaption class="blockquote-footer">
+                            <p id="winMessage"></p>
+                        </figcaption>
+                    </figure>
                     <div id="playerNamePanel">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="playerName" placeholder="None">
@@ -217,11 +202,12 @@
                                 </select>
                                 <label for="selectPlayerName">Select Existing Player Name</label>
                             </div>
-                        </div>                            
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveAndStartBoard()">Play New
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                        onclick="saveAndStartBoard()">Play New
                         Game</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         onclick="saveAndQuit()">Exit</button>
@@ -238,10 +224,15 @@
                     <h5 class="modal-title" id="modalGameOverLabel">Game Over</h5>
                 </div>
                 <div class="modal-body">
-                    <p>
-                        <i class="bi bi-emoji-dizzy mx-2"></i>
-                        <label id="gameOverMessage">Oops!</label>
-                    </p>
+                    <figure class="text-center">
+                        <blockquote class="blockquote">
+                            <i class="bi bi-emoji-dizzy mx-2"></i>
+                            <label>Game Over</label>
+                        </blockquote>
+                        <figcaption class="blockquote-footer">
+                            <label id="gameOverMessage"></label>
+                        </figcaption>
+                    </figure>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="startBoard()">New
