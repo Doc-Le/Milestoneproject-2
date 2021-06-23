@@ -57,8 +57,7 @@ const defaultGameContext = {
     extraScore: 0,
     finalScore: 0,
     score: 0,
-    matched: 0,
-    recordScore: false
+    matched: 0
 };
 /** Board has 8 duplicated shuffled cards */
 let board = [];
@@ -141,6 +140,13 @@ function quit() {
     resetBoard();
 }
 
+/** Function to save and quit game and return to menu panel */
+function saveAndQuit() {
+    // update record scores cached data
+    updateRecordScores();
+    quit();
+}
+
 /** Function to restart game */
 function restart() {
     // restart game context object
@@ -164,6 +170,13 @@ function startBoard() {
     loadBoardElemets();
     updateCounters();
     startTimer();
+}
+
+/** Function to save and start card board */
+function saveAndStartBoard() {
+    // update record scores cached data
+    updateRecordScores();
+    startBoard();
 }
 
 /** Function to start game timer */
@@ -454,12 +467,10 @@ function gameWin() {
     }
     // if has record score on top 20, show player record form
     if (hasRecordScore()) {
-        // set game record
-        gameContext.recordScore = true;
         // record score winner message
         winMessage = `You won! also belong to top 20 record scores.<br />
         Please, provide your name to be included in this select group.<br />
-        You have a great memory!`;      
+        You have a great memory!`;
         showPlayerRecordForm();
         $playerNamePanel.show();
     } else {
@@ -509,7 +520,7 @@ function showPlayerRecordForm() {
                 // update game context player name
                 gameContext.player = $selectPlayerName.val();
             }
-        });      
+        });
         // Clear select DOM elements
         $selectPlayerName.empty();
         // load default select option
@@ -632,13 +643,13 @@ function calculateFinalScore() {
 /** Function to update cache data in localStorage */
 function updateCacheData() {
     if (!Object.keys(cacheData).length) {
-        // temp test 20 scores
-        const scores = getArrayFrom(20).map(function (_, index) {
-            return { player: `Player_${index + 1}`, score: 1000+index };
-        });
+        // // temp test 20 scores
+        // const scores = getArrayFrom(20).map(function (_, index) {
+        //     return { player: `Player_${index + 1}`, score: 1000 + index };
+        // });
         // default cache data object
         cacheData = {
-            scores: cloneObject(scores),
+            scores: [],
             players: []
         };
     }
@@ -661,11 +672,9 @@ function updateCacheData() {
     }, []);
     const storage = window.localStorage;
     // initlaize localStorage if empty
-    if (!storage.length || !storage.getItem(localStorageGameKey)) {
-        // convert object in string
-        const cacheDataString = JSON.stringify(cacheData);
-        storage.setItem(localStorageGameKey, cacheDataString);
-    }
+    // convert object in string
+    const cacheDataString = JSON.stringify(cacheData);
+    storage.setItem(localStorageGameKey, cacheDataString);
 }
 
 /** Function to check if game has record score */
@@ -695,10 +704,14 @@ function updateRecordScores() {
     const scores = higherScores.concat([gameContext.score]).concat(lowerScores);
     // assign new record scores to cache data scores
     cacheData.scores = cloneObject(scores);
+    // update cached data
+    updateCacheData();
 }
 
 /** Function to reset board variables and DOM elements */
 function resetBoard() {
+    // restart game context object
+    gameContext = Object.assign({}, defaultGameContext);    
     // clean all DOM elements
     $board.empty();
     // clean all variables
