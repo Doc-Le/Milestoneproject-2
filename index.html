@@ -38,7 +38,8 @@
             <!-- Header action buttoms when game is in progress -->
             <div class="col-sm-3 text-end">
                 <button id="restart" type="button" class="btn btn-outline-primary me-2">Restart</button>
-                <button id="quit" type="button" class="btn btn-primary">Quit</button>
+                <button id="quit" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#modalQuit">Quit</button>
             </div>
         </header>
         <!-- Menu panel shows top 3 scores, start playing the game, show all scores and about the game -->
@@ -60,8 +61,10 @@
             <div class="col-lg-6 mx-auto my-5">
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                     <button id="play" type="button" class="btn btn-primary">Play</button>
-                    <button id="scores" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalScores">Scores</button>
-                    <button id="rules" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalRules">Rules</button>
+                    <button id="scores" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#modalScores">Scores</button>
+                    <button id="rules" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#modalRules">Rules</button>
                 </div>
             </div>
         </div>
@@ -100,8 +103,8 @@
         </div>
     </div>
     <!-- Modal scores that lists all available cached scores -->
-    <div class="modal fade" id="modalScores" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="modalScoresLabel" aria-hidden="true">
+    <div class="modal fade" id="modalScores" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalScoresLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -118,8 +121,8 @@
         </div>
     </div>
     <!-- Modal rules that shows game rules and score calculation -->
-    <div class="modal fade" id="modalRules" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="modalRulesLabel" aria-hidden="true">
+    <div class="modal fade" id="modalRules" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalRulesLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -127,14 +130,34 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
+    <!-- Modal quit that shows before quit the game -->
+    <div class="modal fade" id="modalQuit" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalQuitLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalQuitLabel">Exit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <i class="bi bi-question-square mx-2"></i>
+                    <label>Are you sure you want to quit the game?</label>
+                </div>
+                <div class="modal-footer">
+                    <button id="exit" type="button" class="btn btn-primary" data-bs-dismiss="modal">Exit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Playing</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery CDN – Latest Stable Version jQuery Core 3.6.0 slim minified -->
     <script src=" https://code.jquery.com/jquery-3.6.0.slim.min.js"
