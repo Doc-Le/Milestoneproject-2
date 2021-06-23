@@ -40,6 +40,7 @@ const splashScreenTimeout = 2000;
 /** Game time interval 3 minutes in seconds */
 const gameTimeInterval = 180;
 const defaultCardImageSource = 'images/empty-card.png';
+const cardMatchedCssClass = 'matched';
 /** Default game context object */
 const defaultGameContext = {
     player: 'N/A',
@@ -268,12 +269,14 @@ function loadBoardElemets() {
     $board.empty();
     // load each board card element
     board.forEach(function (card) {
-        const $image = $(`<img id="img${card.uniqueId}" src="${defaultCardImageSource}" class="img-fluid img-width" alt="Click to play" />`);
-        const $card = $(`<div id="card${card.uniqueId}" class="col d-flex align-items-center"></div>`)
-            .append($image);
+        const $cardImageDefault = $(`<img id="imgDefault${card.uniqueId}" src="${defaultCardImageSource}" class="img-fluid img-width img-thumbnail" alt="Click to select" />`);
+        const $cardImage = $(`<img id="img${card.uniqueId}" src="${card.src}" class="img-fluid img-width img-thumbnail" alt="Image selected" />`).hide();
+        const $card = $(`<div id="card${card.uniqueId}" class="col d-flex justify-content-center board-card"></div>`)
+            .append($cardImageDefault)
+            .append($cardImage);
         // click event to select and validating matched card
         $card.on('click', function () {
-            cardSelect($card, $image, card);
+            cardSelect($card, $cardImageDefault, $cardImage, card);
         });
         $board.append($card);
     });
@@ -282,16 +285,18 @@ function loadBoardElemets() {
 /** 
  * Function to select select and validating matched card when clicked 
  * @param $card card element
- * @param $image card image element
+ * @param $cardImageDefault default card image element
+ * @param $cardImage card image element
  * @param card card object
  */
-function cardSelect($card, $image, card) {
+function cardSelect($card, $cardImageDefault, $cardImage, card) {
     // if card matched or board busy won't do anything and exit function
     if (card.matched || boardBusy) {
         return;
     }
     // set image card source
-    $image.attr('src', card.src);
+    $cardImageDefault.hide();
+    $cardImage.show();
     // if no selected cards
     if (!firstCardSelected) {
         // set current card selected
@@ -301,10 +306,17 @@ function cardSelect($card, $image, card) {
     }
     // increment game context moves by 1
     gameContext.moves++;
+    // set jquery elements
+    const $firstCard = $(`#card${firstCardSelected.uniqueId}`);
+    const $firstCardImageDefault = $(`#imgDefault${firstCardSelected.uniqueId}`);
+    const $firstCardImage = $(`#img${firstCardSelected.uniqueId}`);
     if (firstCardSelected.id == card.id) {
         // set both cards object matched property to true
         firstCardSelected.matched = true;
         card.matched = true;
+        // set cards matched jquery element class
+        $firstCard.addClass(cardMatchedCssClass);
+        $card.addClass(cardMatchedCssClass);
         // update gamer context matched counter
         gameContext.matched++;
         // update game context score multiplying matched plays by base score value
@@ -322,8 +334,10 @@ function cardSelect($card, $image, card) {
         boardBusy = true;
         const timeoutUnmatchedCards = setTimeout(function () {
             // set image card source
-            $image.attr('src', defaultCardImageSource);
-            $(`#img${firstCardSelected.uniqueId}`).attr('src', defaultCardImageSource);
+            $cardImage.hide();
+            $firstCardImage.hide();
+            $cardImageDefault.show();
+            $firstCardImageDefault.show();
             // clear timeout 
             clearTimeout(timeoutUnmatchedCards);
             // unselect both cards
@@ -338,7 +352,7 @@ function cardSelect($card, $image, card) {
             boardBusy = false;
         }, 2000);
     }
-    // update all counters after validating 
+    // update all counters after validation
     updateCounters();
 }
 
