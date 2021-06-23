@@ -392,15 +392,18 @@ function toggleElements($hide, $show) {
  * Function to clone object without reference 
  * @param $data data object to clone
  */
- function cloneObject(data) {
-     // check if data is an array
-     if (Array.isArray(data)) {
-         return Object.assign([], data);
-     // check if data is an object
-     } else if (typeof data === 'object') {
-        return Object.assign({}, data);
-     }
-     return data;
+function cloneObject(data) {
+    // check if data undefined or null
+    if (!data) {
+        return data;
+    }
+    // check if data is an array or object
+    if (Array.isArray(data) || typeof data === 'object') {
+        const defaultType = Array.isArray(data) ? [] : {};
+        return Object.assign(defaultType, data);
+    }
+    // anything else will be return as it comes
+    return data;
 }
 
 /** Function to load top 3 score players from cache */
@@ -459,9 +462,9 @@ function loadAllScores() {
 
 /** Function to end the game and notify player */
 function gameWin() {
-     if (gameContext.matched != numberOfUniqueCards) {
-         return;
-     }
+    if (gameContext.matched != numberOfUniqueCards) {
+        return;
+    }
     // show modal win
     showModalWin();
 }
