@@ -1,11 +1,33 @@
-#board img.img-width {
-    width: 75%;
-  }
-  
-  
-  #score,
-  #moves,
-  #timer {
-    font-weight: bolder;
-    margin-left: 10px;
-  }
+#score,
+#moves,
+#timer {
+  font-weight: bolder;
+  margin-left: 10px;
+}
+
+#live1,
+#live2,
+#live3 {
+  color: red;
+}
+
+
+/* set board cards default cursor styles */
+div.board-card {
+  cursor: default;
+}
+
+div.board-card:hover {
+  cursor: pointer;
+}
+
+/* set board cards images thumbnail style when started or matched */
+div.board-card > img.img-thumbnail {
+  width: 75%;
+  border-width: 5px;
+  border-color: transparent;
+}
+
+div.board-card.matched > img.img-thumbnail {
+  border-color: #00c119;
+}
