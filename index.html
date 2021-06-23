@@ -664,6 +664,26 @@ function hasRecordScore() {
     return (lowerScores || []).length ? true : false;
 }
 
+/** Function to update record scores */
+function updateRecordScores() {
+    const higherScores = [];
+    const lowerScores = [];
+    // extract higher and lower by game record score record scores from cached data scores
+    cacheData.scores.forEach(function (record) {
+        if (record.score <= gameContext.score) {
+            lowerScores.push(record);
+        } else {
+            higherScores.push(record);
+        }
+    });
+    // remove any last item from lower record scores
+    lowerScores.pop();
+    // concatenate new record scores
+    const scores = higherScores.concat([gameContext.score]).concat(lowerScores);
+    // assign new record scores to cache data scores
+    cacheData.scores = cloneObject(scores);
+}
+
 /** Function to reset board variables and DOM elements */
 function resetBoard() {
     // clean all DOM elements
