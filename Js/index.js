@@ -39,7 +39,7 @@ const allCards = getArrayFrom(numberOfAvailableCards).map(function (_, index) {
 const splashScreenTimeout = 2000;
 /** Game time interval 3 minutes in seconds */
 const gameTimeInterval = 180;
-const defaultCardImageSource = 'images/logo.svg';
+const defaultCardImageSource = 'images/empty-card.png';
 /** Default game context object */
 const defaultGameContext = {
     player: 'N/A',
@@ -61,7 +61,10 @@ let cards = [];
 let gameContext = defaultGameContext;
 /** Game time interval object */
 let gameTimeIntervalId;
-
+/** Store first card seleced before checking if matches */
+let firstCardSelected;
+/** Store board busy boolean */
+let boardBusy = false;
 
 /** Function to initialize game context */
 function init() {
@@ -142,10 +145,9 @@ function restart() {
     if (gameTimeIntervalId) {
         clearInterval(gameTimeIntervalId);
     }
-    // start game timer
-    startTimer();
-    // update game counters
+    loadBoardElemets();
     updateCounters();
+    startTimer();
 }
 
 /** Function to save player name from form in cache */
@@ -194,38 +196,45 @@ function getNewCards() {
         // Original card object
         cards.push(card);
     }
-    // duplicate unique 8 cards to be matched
-    cards = cards.concat(cards);
+    // duplicate unique 8 cards to be matched and set unitque ID
+    const duplicatedCards = cards.reduce(function (acc, cur) {
+        const card = Object.assign({}, cur, { uniqueId: `card_${cur.id}_2` });
+        return acc.concat(card);
+    }, []);
+    // concatenate duplicated cards
+    cards = cards.concat(duplicatedCards);
 }
 
 /** Function to get new random card */
 function getNewCard() {
     const id = Math.floor(numberOfAvailableCards * Math.random());
-    // Find if card already exists in cards
+    // find if card already exists in cards
     const cardExists = cards.find(function (card) {
         return card.id === id;
     });
-    // If card already exists in cards, get new card again
+    // if card already exists in cards, get new card again
     if (cardExists) {
         // call get new card function again
         return getNewCard();
     }
-    // If card doesn't exist return new card
+    // if card doesn't exist return new card
     return {
+        // card id that matches with duplicate
         id: id,
-        // Card image source path
+        // card unique id
+        uniqueId: `card_${id}_1`,
+        // card image source path
         src: `images/${id}.jpg`,
-        // Card currently selected by player
+        // card currently selected by player
         selected: false,
-        // Card already matched by player
+        // card already matched by player
         matched: false
     };
 }
 
 /** Function to shuffle board cards randomly */
 function shuffleBoard() {
-    board = cards;
-    let counter = board.length;
+    let counter = cards.length;
     // while there are items in the array
     while (counter > 0) {
         // pick a random index
@@ -233,10 +242,15 @@ function shuffleBoard() {
         // decrease counter by 1
         counter--;
         // and swap the last item index with it
-        const temp = board[counter];
-        board[counter] = board[index];
-        board[index] = temp;
+        const temp = cards[counter];
+        cards[counter] = cards[index];
+        cards[index] = temp;
     }
+    // update each index property
+    board = cards.map(function (card) {
+        card.index = cards.indexOf(card);
+        return card;
+    });
 }
 
 /** 
@@ -248,24 +262,21 @@ function getArrayFrom(size) {
     return Array.from(new Array(size));
 }
 
-/** Function to load board DOM elements */
+/** Function to load board DOM element cards */
 function loadBoardElemets() {
+    // empty board element
     $board.empty();
+    // load each board card element
     board.forEach(function (card) {
-        const $image = $(`<img id="image${card.index}" src="${card.src}" class="img-fluid img-width" alt="Click to play" />`);
-        const $card = $(`<div id="card${card.index}" class="col d-flex align-items-start"></div>`);
+        const $image = $(`<img id="img${card.uniqueId}" src="${defaultCardImageSource}" class="img-fluid img-width" alt="Click to play" />`);
+        const $card = $(`<div id="card${card.uniqueId}" class="col d-flex align-items-start"></div>`)
+            .append($image);
         // click event to select and validating matched card
         $card.on('click', function () {
             cardSelect($card, $image, card);
         });
         $board.append($card);
     });
-    let revertDefaultImageTimeout = setTimeout(function () {
-        $board.find(`img`, function ($image) {
-            $image.attr('src', defaultCardImageSource);
-        });
-        clearTimeout(revertDefaultImageTimeout);
-    }, 1000);
 }
 
 /** 
@@ -275,39 +286,60 @@ function loadBoardElemets() {
  * @param card card object
  */
 function cardSelect($card, $image, card) {
-    // if card matched won't do anything and exit function
-    if (card.matched) {
+    // if card matched or board busy won't do anything and exit function
+    if (card.matched || boardBusy) {
         return;
     }
     // set image card source
     $image.attr('src', card.src);
-    // seach for all selected cards in board array
-    const selectedCards = board.filter(function (boardCard) {
-        return boardCard.selected;
-    });
     // if no selected cards
-    if (selectedCards.length == 0) {
-        // select current card
+    if (!firstCardSelected) {
+        // set current card selected
         card.selected = true;
+        firstCardSelected = Object.assign({}, card);
         return;
     }
-    const selectedCard = selectedCards[0];
     // increment game context moves by 1
     gameContext.moves++;
-    if (selectedCard.id == card.id) {
+    if (firstCardSelected.id == card.id) {
         // set both cards object matched property to true
-        selectedCard.matched = true;
+        firstCardSelected.matched = true;
         card.matched = true;
         // update gamer context matched counter
         gameContext.matched++;
         // update game context score multiplying matched plays by base score value
         gameContext.score = parseInt(gameContext.matched * baseScoreValue);
+        // unselect both cards
+        firstCardSelected.selected = false;
+        card.selected = false;
+        // update board cards
+        board[board.indexOf(firstCardSelected)] = Object.assign({}, firstCardSelected);
+        board[board.indexOf(card)] = Object.assign({}, card);
+        // clear first selected card variable
+        firstCardSelected = undefined;        
+    } else {
+        // set board busy
+        boardBusy = true;
+        const timeoutUnmatchedCards = setTimeout(function () {
+            // set image card source
+            $image.attr('src', defaultCardImageSource);
+            $(`#img${firstCardSelected.uniqueId}`).attr('src', defaultCardImageSource);
+            // clear timeout 
+            clearTimeout(timeoutUnmatchedCards);
+            // unselect both cards
+            firstCardSelected.selected = false;
+            card.selected = false;
+            // update board cards
+            board[board.indexOf(firstCardSelected)] = Object.assign({}, firstCardSelected);
+            board[board.indexOf(card)] = Object.assign({}, card);
+            // clear first selected card variable
+            firstCardSelected = undefined;        
+            // release board busy
+            boardBusy = false;
+        }, 2000);
     }
     // update all counters after validating 
     updateCounters();
-    // unselect both cards
-    selectedCard.selected = false;
-    card.selected = false;
 }
 
 /** Function to load top 3 player from cache */
