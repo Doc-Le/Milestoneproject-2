@@ -21,8 +21,10 @@ const $restartButton = $('#restart');
 const $saveButton = $('#save');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
+const baseScoreValue = 100;
 const numberOfAvailableCards = 50;
 const numberOfUniqueCards = 8;
+const totalNumberOfLives = 6;
 const cardsAvailable = 50;
 /** All 50 card objects available */
 const allCards = getArrayFrom(numberOfAvailableCards).map(function (_, index) {
@@ -39,7 +41,16 @@ const splashScreenTimeout = 2000;
 const gameTimeInterval = 180;
 const defaultCardImageSource = 'images/logo.svg';
 /** Default game context object */
-const defaultGameContext = { player: 'N/A', moves: 0, lives: 6, time: gameTimeInterval, score: 0, matched: 0 };
+const defaultGameContext = {
+    player: 'N/A',
+    moves: 0,
+    lives: totalNumberOfLives,
+    time: gameTimeInterval,
+    extraScore: 0,
+    finalScore: 0,
+    score: 0,
+    matched: 0
+};
 /** Board has 8 duplicated shuffled cards */
 let board = [];
 /** Cached data object from local storage */
@@ -125,12 +136,14 @@ function quit() {
 
 /** Function to restart game */
 function restart() {
+    // restart game context object
+    gameContext = defaultGameContext;
     // clear time interval if exists
     if (gameTimeIntervalId) {
         clearInterval(gameTimeIntervalId);
     }
-    // restart game context object
-    gameContext = defaultGameContext;
+    // start game timer
+    startTimer();
     // update game counters
     updateCounters();
 }
@@ -170,8 +183,6 @@ function startTimer() {
             const seconds = interval % 60;
             //update game timer DOM
             $timer.text(`${minutes}m ${seconds}s`);
-            //update game score
-            updateScore();
         }
     }, 1000);
 }
@@ -281,12 +292,16 @@ function cardSelect($card, $image, card) {
         return;
     }
     const selectedCard = selectedCards[0];
+    // increment game context moves by 1
+    gameContext.moves++;
     if (selectedCard.id == card.id) {
         // set both cards object matched property to true
         selectedCard.matched = true;
         card.matched = true;
         // update gamer context matched counter
         gameContext.matched++;
+        // update game context score multiplying matched plays by base score value
+        gameContext.score = parseInt(gameContext.matched * baseScoreValue);
     }
     // update all counters after validating 
     updateCounters();
@@ -325,8 +340,7 @@ function updateCounters() {
 
 /** Function to update moves counter */
 function updateMoves() {
-    // increment moves by 1
-    const moves = gameContext.moves++;
+    const moves = gameContext.moves;
     // update move DOM counter
     $moves.text(moves);
 }
@@ -380,16 +394,26 @@ function updateLives() {
 
 /** Function to update score counter based on lives, moves, time and matched cards */
 function updateScore() {
-    const moves = gameContext.moves;
-    const lives = gameContext.lives;
-    const time = gameContext.time;
-    const matched = gameContext.matched;
-    // calculate score value
-    const score = parseInt((moves + lives + matched) * time);
+    // do nothing is score is zero or null
+    if (!gameContext.score) {
+        return;
+    }
     // update score DOM counter
-    $score.text(score);
-    // update score in game context object
-    gameContext.score = score;
+    $score.text(gameContext.score);
+}
+
+/** Function to calculate final game score */
+function calculateFinalScore() {
+    // if game matched all 8 cards it should calculate extra points
+    if (gameContext.matched == numberOfUniqueCards) {
+        const moves = Math.round(gameContext.moves / numberOfUniqueCards);
+        const lives = gameContext.lives;
+        const time = gameTimeInterval - gameContext.time;
+        // calculate extra score
+        gameContext.extraScore = (moves + lives + time) * baseScoreValue;
+    }
+    // calculate final score value
+    gameContext.finalScore = parseInt(gameContext.score + gameContext.extraScore);
 }
 
 /** JQuery detects state of readiness and call initilize */
