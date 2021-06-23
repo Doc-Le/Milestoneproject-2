@@ -1,3 +1,4 @@
+
 /* heart icons color red */
 #live1,
 #live2,
@@ -5,6 +6,10 @@
   color: #ff0000;
 }
 
+/* logo image max width */
+#logo {
+  max-width: 25px;
+}
 
 #splash > img.img-fluid {
   max-width: 250px;
