@@ -650,16 +650,24 @@ function calculateFinalScore() {
 
 /** Function to update cache data in localStorage */
 function updateCacheData() {
+    const storage = window.localStorage;
     if (!Object.keys(cacheData).length) {
-        // // temp test 20 scores
-        // const scores = getArrayFrom(20).map(function (_, index) {
-        //     return { player: `Player_${index + 1}`, score: 1000 + index };
-        // });
-        // default cache data object
-        cacheData = {
-            scores: [],
-            players: []
-        };
+        // get localStorage cache data
+        const cacheDataString = storage.getItem(localStorageGameKey);
+
+        // if cache data string empty
+        if (!cacheDataString) {
+            // default cache data object
+            cacheData = {
+                // recod score list, player and score
+                scores: [],
+                // player name list
+                players: []
+            };
+        } else {
+            // assign cache data object from localStorage
+            cacheData = JSON.parse(cacheDataString);
+        }
     }
     // sort scores by desc score
     const scores = cacheData.scores.sort(function (a, b) {
@@ -678,15 +686,18 @@ function updateCacheData() {
         }
         return acc;
     }, []);
-    const storage = window.localStorage;
-    // initlaize localStorage if empty
     // convert object in string
     const cacheDataString = JSON.stringify(cacheData);
+    // set localStorage cache data
     storage.setItem(localStorageGameKey, cacheDataString);
 }
 
 /** Function to check if game has record score */
 function hasRecordScore() {
+    // if no scores any new score will be a recod
+    if (!cacheData.scores.length) {
+        return true;
+    }
     // filter for lower record scores
     const lowerScores = cacheData.scores.filter(function (record) {
         return record.score <= gameContext.score;
