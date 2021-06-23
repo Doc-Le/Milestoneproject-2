@@ -14,14 +14,17 @@ const $moves = $('#moves');
 const $splash = $('#splash');
 const $score = $('#score');
 const $timer = $('#timer');
+const $allScores = $('#allScores');
 const $topScores = $('#topScores');
 const $playButton = $('#play');
 const $quitButton = $('#quit');
 const $exitButton = $('#exit');
 const $restartButton = $('#restart');
 const $saveButton = $('#save');
+const $scoresButton = $('#scores');
 const $gamePanel = $('#gamePanel');
 const $menuPanel = $('#menuPanel');
+const $modalWin = $('#modalWin');
 const baseScoreValue = 100;
 const numberOfAvailableCards = 50;
 const numberOfUniqueCards = 8;
@@ -81,6 +84,7 @@ function attachEvents() {
     $exitButton.on('click', quit);
     $restartButton.on('click', restart);
     $saveButton.on('click', savePlayerName);
+    $scoresButton.on('click', loadAllScores);
 }
 
 /** Function to show splash and transition to main screen */
@@ -119,6 +123,16 @@ function showGamePanel() {
     // Show header action buttoms when menu visible
     $restartButton.show();
     $quitButton.show();
+}
+
+/** 
+ * Function to show modal win 
+ */
+function showModalWin() {
+    // get modal object using bootstrap api library
+    const modalWin = new bootstrap.Modal($modalWin[0], { keyboard: false });
+    // showing winning modal window
+    modalWin.show()
 }
 
 /** Function to start playing game */
@@ -358,7 +372,7 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
     updateCounters();
 }
 
-/** Function to load top 3 player from cache */
+/** Function to load top 3 score players from cache */
 function loadTopScores() {
     // empty top scores board 
     $topScores.empty();
@@ -385,6 +399,31 @@ function loadTopScores() {
         // append jquery element row to top scores table body
         $topScores.append($row);
     }
+}
+
+/** Function to load all score players from cache */
+function loadAllScores() {
+    // empty top scores board 
+    $allScores.empty();
+    // update cache data from localStorage
+    updateCacheData();
+    // sort scores by biggest score
+    const scores = cacheData.scores.sort(function (a, b) {
+        return b.score - a.score;
+    });
+    // list each score player
+    scores.forEach(function (item, index) {
+        // create jquery element row
+        const $row = $(`
+        <tr>
+            <th scope="row">${index + 1}</th>
+            <td>${item.player}</td>
+            <td>${item.score}</td>
+        </tr>
+        `);
+        // append jquery element row to top scores table body
+        $allScores.append($row);
+    });
 }
 
 /** 
@@ -497,6 +536,9 @@ function updateCacheData() {
                 { player: 'Anne', score: 234 },
                 { player: 'Josef', score: 2500 },
                 { player: 'Rodrigo', score: 3000 },
+                { player: 'Leandro', score: 567 },
+                { player: 'Mary', score: 300 },
+                { player: 'Paul', score: 145 }
             ],
             players: []
         };
