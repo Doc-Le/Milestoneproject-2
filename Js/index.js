@@ -717,10 +717,12 @@ function updateRecordScores() {
             higherScores.push(record);
         }
     });
-    // remove any last item from lower record scores
+    // remove any last item from lower record scores if any
     lowerScores.pop();
-    // concatenate new record scores
-    const scores = higherScores.concat([gameContext.score]).concat(lowerScores);
+    // new record score 
+    const score = { player: gameContext.player, score: gameContext.score };
+    // concatenate new record scores in between high and low
+    const scores = higherScores.concat([score]).concat(lowerScores);
     // assign new record scores to cache data scores
     cacheData.scores = cloneObject(scores);
     // update cached data
