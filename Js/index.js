@@ -91,8 +91,7 @@ function attachEvents() {
 
 /** Function to show splash and transition to main screen */
 function showSplashScreen() {
-    $splash.show();
-    $main.hide();
+    toggleElements($main, $splash);
     const hideSplashScreenTimeout = setTimeout(function () {
         showMainScreen();
         clearTimeout(hideSplashScreenTimeout);
@@ -101,8 +100,7 @@ function showSplashScreen() {
 
 /** Function to show main and hide splash screen */
 function showMainScreen() {
-    $splash.hide();
-    $main.show();
+    toggleElements($splash, $main);
     showMenuPanel();
 }
 
@@ -110,8 +108,7 @@ function showMainScreen() {
 function showMenuPanel() {
     loadTopScores();
     // Show/hide panels
-    $gamePanel.hide();
-    $menuPanel.show();
+    toggleElements($gamePanel, $menuPanel);
     // Hide header action buttoms when menu visible
     $restartButton.hide();
     $quitButton.hide();
@@ -120,8 +117,7 @@ function showMenuPanel() {
 /** Function to show game and hide menu panel */
 function showGamePanel() {
     // Show/hide panels
-    $gamePanel.show();
-    $menuPanel.hide();
+    toggleElements($gamePanel, $menuPanel);
     // Show header action buttoms when menu visible
     $restartButton.show();
     $quitButton.show();
@@ -322,8 +318,7 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
         return;
     }
     // set image card source
-    $cardImageDefault.hide();
-    $cardImage.show();
+    toggleElements($cardImageDefault, $cardImage);
     // if no selected cards
     if (!firstCardSelected) {
         // set current card selected
@@ -363,10 +358,8 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
         boardBusy = true;
         const timeoutUnmatchedCards = setTimeout(function () {
             // set image card source
-            $cardImage.hide();
-            $firstCardImage.hide();
-            $cardImageDefault.show();
-            $firstCardImageDefault.show();
+            toggleElements($cardImage, $cardImageDefault);
+            toggleElements($firstCardImage, $firstCardImageDefault);
             // clear timeout 
             clearTimeout(timeoutUnmatchedCards);
             // unselect both cards
@@ -383,6 +376,16 @@ function cardSelect($card, $cardImageDefault, $cardImage, card) {
     }
     // update all counters after validation
     updateCounters();
+}
+
+/** 
+ * Function to toggle elements 
+ * @param $hide hide element
+ * @param $show show element
+ */
+function toggleElements($hide, $show) {
+    $hide.hide();
+    $show.show();
 }
 
 /** Function to load top 3 score players from cache */
@@ -440,7 +443,7 @@ function loadAllScores() {
 }
 
 /** Function to end the game and notify player */
- function gameWin() {
+function gameWin() {
      if (gameContext.matched != numberOfUniqueCards) {
          return;
      }
