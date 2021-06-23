@@ -181,13 +181,34 @@
                     <h5 class="modal-title" id="modalWinLabel">Congratulations</h5>
                 </div>
                 <div class="modal-body">
-                    <p>
+                    <div>
                         <i class="bi bi-trophy mx-2"></i>
                         <label>Congratulations!</label>
-                    </p>
+                        <p id="winMessage">
+                        </p>
+                    </div>
+                    <div id="playerNamePanel">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="playerName" placeholder="None">
+                            <label for="playerName">Player Name</label>
+                        </div>
+                        <div id="selectPlayerNamePanel">
+                            <p>OR</p>
+                            <div class="form-floating">
+                                <select class="form-select" id="selectPlayerName"
+                                    aria-label="Floating label select example">
+                                    <option selected>Select Player Name</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                                <label for="selectPlayerName">Select Existing Player Name</label>
+                            </div>
+                        </div>                            
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="startBoard()">New
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="startBoard()">Play New
                         Game</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         onclick="quit()">Exit</button>
