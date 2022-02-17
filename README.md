@@ -8,7 +8,7 @@
 
 What is the Memory Game?
 
-* Link view the live project here
+* Link view the live project 🏠 [here](https://doc-le.github.io/Milestoneproject-2/) 
 
 The memory game consists of fifth cards arranged randomly in a grid. The deck is made up of eight different pairs of cards, each with different symbols on one side.
 
